@@ -2,17 +2,30 @@
   "name": "azure-devops-terraform-cli-extension",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "bin/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc --build",
+    "pack": "./node_modules/.bin/copyfiles package.json task.json icon.png \".bin/*.js\" -e \".bin/tests/*\" .dist && cd .dist && npm install --only=prod",
+    "delete": "./node_modules/.bin/tfx build tasks delete --task-id 88fe47cf-4080-4fca-84c8-1145448293f4",
+    "upload": "./node_modules/.bin/tfx build tasks upload --task-path .dist",
+    "start": "node --require dotenv/config .bin/index.js"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
-    "azure-pipelines-task-lib": "^2.8.0"
+    "azure-pipelines-task-lib": "^2.8.0",
+    "config": "^3.2.1",
+    "inversify": "^5.0.1",
+    "reflect-metadata": "^0.1.13",
+    "tsyringe": "^3.3.0"
   },
   "devDependencies": {
+    "@types/mocha": "^5.2.6",
     "@types/node": "^12.6.8",
-    "@types/q": "^1.5.2"
+    "@types/q": "^1.5.2",
+    "mocha": "^5.2.0",
+    "tfx-cli": "^0.6.4",
+    "typescript": "^3.3.3333",
+    "mocha-junit-reporter": "^1.18.0"
   }
 }

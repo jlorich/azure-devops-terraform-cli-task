@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "build-release-task",
     "name": "Terraform CLI Task",
-    "version": "0.0.4",
+    "version": "0.0.6",
     "publisher": "jlorich",
     "targets": [
         {

@@ -14,7 +14,7 @@
     "instanceNameFormat": "Terraform",
     "inputs": [
         {
-            "name": "connectedServiceNameARM",
+            "name": "ArmServiceConnection",
             "aliases": [
                 "azureSubscription"
             ],
@@ -27,10 +27,18 @@
             }
         },
         {
+            "name": "initialize",
+            "type": "bool",
+            "label": "Initialize Terraform",
+            "defaultValue": "true",
+            "required": true,
+            "helpMarkDown": "Runs terraform init before executing the provided script"
+        },
+        {
             "name": "scriptLocation",
             "type": "pickList",
             "label": "Script Location",
-            "defaultValue": "scriptPath",
+            "defaultValue": "inlineScript",
             "required": true,
             "helpMarkDown": "Type of script: File path or Inline script",
             "options": {
