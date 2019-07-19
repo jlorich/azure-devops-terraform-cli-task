@@ -1,0 +1,33 @@
+{
+    "manifestVersion": 1,
+    "id": "build-release-task",
+    "name": "Terraform CLI Task",
+    "version": "0.0.4",
+    "publisher": "jlorich",
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],    
+    "description": "Task for running authorized terraform commands against an Azure ARM Service Connection",
+    "categories": [
+        "Azure Pipelines"
+    ],
+    "files": [
+        {
+            "path": "terraformCliTask"
+        }
+    ],
+    "contributions": [
+        {
+            "id": "88fe47cf-4080-4fca-84c8-1145448293f4",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "terraformCliTask"
+            }
+        }
+    ]
+}
