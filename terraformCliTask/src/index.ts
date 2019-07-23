@@ -6,6 +6,9 @@ import { TaskAuthentication } from './TaskAuthentication';
 import { TaskOptions } from './TaskOptions';
 import { TerraformCliTask } from './TerraformCliTask';
 import { TerraformAuthentication } from './TerraformAuthentication';
+import task = require('azure-pipelines-task-lib/task');
+import { TaskResult } from "azure-pipelines-task-lib/task";
+
 
 let container = new Container();
 
@@ -15,5 +18,11 @@ container.bind<TaskAuthentication>(TaskAuthentication).toSelf();
 container.bind<TerraformAuthentication>(TerraformAuthentication).toSelf();
 container.bind<Terraform>(Terraform).toSelf();
 
-var task = container.resolve(TerraformCliTask);
-task.run();
+var cli = container.resolve(TerraformCliTask);
+
+cli.run().then(function() 
+{
+    task.setResult(TaskResult.Succeeded, "Terraform successfully ran");
+}, function() {
+    task.setResult(TaskResult.Failed, "Terraform failed to run");
+});

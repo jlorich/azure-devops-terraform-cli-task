@@ -7,21 +7,34 @@ import { injectable } from "inversify";
 @injectable()
 export class TaskOptions {
 
-    readonly ArmServiceConnectionName : string;
+    readonly ConnectedServiceName : string;
+    readonly UseTargetSubscriptionForBackend : boolean;
+    readonly BackendConnectedServiceName : string;
+    readonly TargetStorageAccountName : string;
+    readonly BackendStorageAccountName : string;
+    readonly BackendContainerName : string;
+    readonly BackendStateFileKey : string;
     readonly ScriptLocation : string;
     readonly ScriptPath : string;
     readonly Cwd : string;
-    readonly InlineScript : string;
-    readonly Init : boolean;
+    readonly Script : string;
+    readonly Initialize : boolean;
     readonly TempDir : string;
 
     constructor() {
-        this.ArmServiceConnectionName = task.getInput("ArmServiceConnection", true)
+        this.ConnectedServiceName = task.getInput("connectedServiceName", true)
+        this.UseTargetSubscriptionForBackend = task.getInput("useTargetSubscriptionForBackend") === "true";
+        this.BackendConnectedServiceName = task.getInput("backendConnectedServiceName", false)
+        this.BackendStorageAccountName = task.getInput("backendStorageAccountName", false)
+        this.TargetStorageAccountName = task.getInput("targetStorageAccountName", false)
+        this.BackendContainerName = task.getInput("backendContainerName", true)
+        this.BackendStateFileKey = task.getInput("backendStateFileKey", true)
         this.ScriptLocation = task.getInput("scriptLocation", true)
         this.ScriptPath = task.getInput("scriptPath")
-        this.InlineScript = task.getInput("inlineScript")
+        this.Script = task.getInput("script")
         this.Cwd = task.getInput("cwd")
-        this.Init = task.getInput("initialize") === "true";
+        this.Initialize = task.getInput("initialize") === "true";
+        
         this.TempDir = task.getVariable("Agent.TempDirectory");
     }
 }

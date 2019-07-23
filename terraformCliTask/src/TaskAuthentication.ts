@@ -2,7 +2,6 @@ import { injectable } from "inversify";
 import task = require('azure-pipelines-task-lib/task');
 import fs = require("fs");
 import path = require("path");
-import { TaskOptions } from "./TaskOptions";
 import { TaskAuthenticationMethod } from "./TaskAuthenticationMethod";
 
 /**
@@ -17,14 +16,13 @@ export class TaskAuthentication {
     public armSubscriptionId: string = "";
     public taskAuthenticationMethod: TaskAuthenticationMethod = TaskAuthenticationMethod.Unknown;
 
-    private connectedServiceName: string;
+    constructor(private connectedServiceName: string) {
+        let authScheme = task.getEndpointAuthorizationScheme(connectedServiceName, true);
 
-    constructor(private taskOptions: TaskOptions) {
-        this.connectedServiceName = taskOptions.ArmServiceConnectionName;
-        let authScheme = task.getEndpointAuthorizationScheme(this.connectedServiceName, true);
-        
+        this.LoadArmDetails();
+
         switch(authScheme.toLowerCase()) {
-            case "servicePrincipal":
+            case "serviceprincipal":
                 this.LoadServicePrincipalDetails();
                 break;
             case "managedserviceidentity":
@@ -33,10 +31,14 @@ export class TaskAuthentication {
         }
     }
 
+    private LoadArmDetails() {
+        this.armTenantId = task.getEndpointAuthorizationParameter(this.connectedServiceName, "tenantid", true);
+        this.armSubscriptionId = task.getEndpointDataParameter(this.connectedServiceName, 'subscriptionid', true);
+    }
+
     private LoadServicePrincipalDetails() {
         let authType = task.getEndpointAuthorizationParameter(this.connectedServiceName, 'authenticationType', true);
         this.armClientId = task.getEndpointAuthorizationParameter(this.connectedServiceName, "serviceprincipalid", false);
-        this.armTenantId = task.getEndpointAuthorizationParameter(this.connectedServiceName, "tenantid", false);
 
         switch(authType) {
             case "spnCertificate":

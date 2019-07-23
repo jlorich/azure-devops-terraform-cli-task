@@ -5,9 +5,10 @@ import { TaskAuthenticationMethod } from "./TaskAuthenticationMethod";
 
 @injectable()
 export class TerraformAuthentication {
+    private auth: TaskAuthentication;
 
-    constructor(private auth: TaskAuthentication) {
-
+    constructor(private connectedServiceName: string) {
+        this.auth = new TaskAuthentication(connectedServiceName);
     }
 
     public ToEnv(): { [key: string]: string; } {

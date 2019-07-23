@@ -13,13 +13,13 @@ export class TerraformCliTask {
         
     }
 
-    public run() {
-        if(this.options.Init) {
-            this.terraform.init();
+    public async run() {
+        if(this.options.Initialize) {
+            await this.terraform.init();
         }
 
         let scriptPath = this.InitScriptAtPath();
-        let result = this.terraform.exec(scriptPath);
+        await this.terraform.exec(scriptPath);
     }
 
     private InitScriptAtPath(): string {
@@ -38,7 +38,7 @@ export class TerraformCliTask {
                 scriptPath = path.join(tmpDir, "terraformclitaskscript" + new Date().getTime() + ".bat");
             }
             
-            this.createFile(scriptPath, this.options.InlineScript);
+            this.createFile(scriptPath, this.options.Script);
         }
 
         return scriptPath;
