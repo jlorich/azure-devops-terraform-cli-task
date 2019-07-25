@@ -1,8 +1,8 @@
 {
     "manifestVersion": 1,
-    "id": "terraform-cli",
-    "name": "Terraform CLI Task",
-    "version": "0.0.1",
+    "id": "TerraformCli",
+    "name": "Terraform CLI ",
+    "version": "0.1.52",
     "publisher": "jlorich",
     "targets": [
         {
@@ -15,18 +15,18 @@
     ],
     "files": [
         {
-            "path": "terraformCliTask"
+            "path": "TerraformCli"
         }
     ],
     "contributions": [
         {
-            "id": "88fe47cf-4080-4fca-84c8-1145448293f4",
+            "id": "5619d23d-fb03-4459-a295-5958fd240452",
             "type": "ms.vss-distributed-task.task",
             "targets": [
                 "ms.vss-distributed-task.tasks"
             ],
             "properties": {
-                "name": "terraformCliTask"
+                "name": "TerraformCli"
             }
         }
     ]
