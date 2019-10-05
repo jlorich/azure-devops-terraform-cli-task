@@ -5,84 +5,54 @@ import fs = require("fs");
 import { Container, injectable, inject } from "inversify";
 import { ToolRunner, IExecOptions, IExecSyncResult } from "azure-pipelines-task-lib/toolrunner";
 import { TaskOptions } from "./TaskOptions";
-import { TerraformAuthentication } from "./TerraformAuthentication";
-import { AzureStorageService } from "./AzureStorageService";
-import { TaskAuthentication } from "./TaskAuthentication";
+import { TerraformProvider } from "./Provider/TerraformProvider";
 
 @injectable()
 export class Terraform {
     private readonly terraform : ToolRunner;
-    private readonly auth : TerraformAuthentication;
 
     constructor(
         private options: TaskOptions,
+        private provider : TerraformProvider
     ) {
-        this.auth = new TerraformAuthentication(options.ConnectedServiceName);
         this.terraform = this.createTerraformToolRunner();
     }
 
-
     /**
-     * Initializes Terraform
+     * Initializes Terraform with the configuration specified from the provider
      */
     public async init() {
-        console.log("Initializing Terraform...");
+        let backendConfig = await this.provider.getBackendConfig();
+        let args = new Array<string>();
 
-        let auth : TaskAuthentication;
-
-        if (this.options.UseTargetSubscriptionForBackend) {
-            auth = new TaskAuthentication(this.options.ConnectedServiceName);
-        } else {
-            auth = new TaskAuthentication(this.options.BackendConnectedServiceName);
+        // Set the backend configuration values
+        for (let key in backendConfig) {
+            let value = backendConfig[key];
+            args.push(`-backend-config="${key}=${value}"`);
         }
 
-        let storage = new AzureStorageService(auth);
-        let storageAccount = this.options.UseTargetSubscriptionForBackend ? this.options.TargetStorageAccountName : this.options.BackendStorageAccountName;
-
-        // I'd much prefer to use a SAS here but generating SAS isn't supported via the JS SDK without using a key
-        let storage_key = await storage.GetKey(
-            storageAccount,
-            this.options.BackendContainerName);
-
-        let result = await this.terraform
-            .arg("init")
-            .arg("-input=false")
-            .arg(`-backend-config=storage_account_name=${storageAccount}`)
-            .arg(`-backend-config=container_name=${this.options.BackendContainerName}`)
-            .arg(`-backend-config=key=${this.options.BackendStateFileKey}`)
-            .arg(`-backend-config=access_key=${storage_key}`)
-            .exec({
-                cwd: this.options.Cwd,
-                env: {
-                    ...process.env,
-                    ...this.auth.ToEnv()
-                },
-                windowsVerbatimArguments: true
-        } as unknown as IExecOptions);
-
-        if (result > 0) {
-            throw new Error("Terraform initalize failed");
-        }
+        await this.exec("init", args);
     }
 
     /**
      * Executes a script within an authenticated Terraform environment
      * @param script The location of the script to run
      */
-    public async exec(script: string) {
+    public async cli(script: string) {
         console.log("Executing terraform script");
 
         let content = fs.readFileSync(script,'utf8');
 
         console.log(content);
 
+        let env = this.provider.getEnv();
         let tool = this.createCliToolRunner(script);
 
         let result = await tool.exec({
             cwd: this.options.Cwd,
             env: {
                 ...process.env,
-                ...this.auth.ToEnv()
+                ...env
             },
             windowsVerbatimArguments: true
         } as unknown as IExecOptions);
@@ -92,6 +62,40 @@ export class Terraform {
         }
     }
 
+   /**
+     * Executes a script within an authenticated Terraform environment
+     * @param script The location of the script to run
+     */
+    public async exec(cmd: string, args: Array<string>) {
+        console.log("Executing terraform command");
+
+        let env = this.provider.getEnv();
+
+        let command = this.terraform
+            .arg(cmd)
+            .arg("-input=false");
+
+        for (let arg in args) {
+            command.arg(arg);
+        }
+
+        let result = await command.exec({
+            cwd: this.options.Cwd,
+            env: {
+                ...process.env,
+                ...env
+            },
+            windowsVerbatimArguments: true
+        } as unknown as IExecOptions);
+
+        if (result > 0) {
+            throw new Error("Terraform initalize failed");
+        }
+    }
+
+    /**
+     * Creates an Azure Pipelines ToolRunner for Terraform
+     */
     private createTerraformToolRunner() : ToolRunner {
         let terraformPath = task.which("terraform", true);
         let terraform: ToolRunner = task.tool(terraformPath);
@@ -107,6 +111,9 @@ export class Terraform {
         return terraform;
     }
 
+    /**
+     * Creates an Azure Pipelines ToolRunner for Bash or CMD
+     */
     private createCliToolRunner(scriptPath : string) : ToolRunner {
         var tool;
 

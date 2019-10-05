@@ -1,24 +1,25 @@
 import * as msRestNodeAuth from "@azure/ms-rest-nodeauth";
 import { injectable } from "inversify";
-import { TaskAuthentication } from "./TaskAuthentication";
-import { TaskAuthenticationMethod } from "./TaskAuthenticationMethod";
+import { ARMAuthenticationMethod } from "./ARMAuthenticationMethod";
+import { ARMConnectedServiceOptions } from "./ARMConnectedServiceOptions";
 import { AzureTokenCredentialsOptions } from "@azure/ms-rest-nodeauth";
 import { StorageManagementClient } from "@azure/arm-storage";
 import { ServiceClientCredentials } from "@azure/ms-rest-js";
+
 /**
- * Strong-type accessor for Task configuration
+ * Access Azure Storage to get a key for the account
  */
 @injectable()
 export class AzureStorageService {
     private readonly StorageUrl = "https://management.azure.com/"
 
-    constructor(private auth: TaskAuthentication) {
+    constructor(private connectedService: ARMConnectedServiceOptions) {
 
     }
 
-    public async GetKey(storageAccountName: string, containerName: string) : Promise<string> {
-        var creds = await this.Login();
-        var client = new StorageManagementClient(creds, this.auth.armSubscriptionId);
+    public async getKey(storageAccountName: string, containerName: string) : Promise<string> {
+        var creds = await this.login();
+        var client = new StorageManagementClient(creds, this.connectedService.subscriptionId);
         var storageAccounts = await client.storageAccounts.list();
 
         var account = storageAccounts.find(item => item.name == storageAccountName);
@@ -46,21 +47,20 @@ export class AzureStorageService {
         return keysResult.keys[0].value;
     }
 
-    private async Login() : Promise<ServiceClientCredentials> {
-        switch(this.auth.taskAuthenticationMethod) {
-            case TaskAuthenticationMethod.ManagedIdentity:
-                return this.LoginWithManagedIdentity();
-            case TaskAuthenticationMethod.ServicePrincipalKey:
-                return this.LoginWithServicePrincipalKey();
-            case TaskAuthenticationMethod.ServicePrincipalCertificate:
-                return this.LoginWithServicePrincipalCertificate();
+    private async login() : Promise<ServiceClientCredentials> {
+        switch(this.connectedService.authenticationMethod) {
+            case ARMAuthenticationMethod.ManagedIdentity:
+                return this.loginWithManagedIdentity();
+            case ARMAuthenticationMethod.ServicePrincipalKey:
+                return this.loginWithServicePrincipalKey();
+            case ARMAuthenticationMethod.ServicePrincipalCertificate:
+                return this.loginWithServicePrincipalCertificate();
         }
 
         throw new Error("No valid authentication method specified");
-
     }
 
-    private async LoginWithManagedIdentity() : Promise<ServiceClientCredentials> {
+    private async loginWithManagedIdentity() : Promise<ServiceClientCredentials> {
         var creds = await msRestNodeAuth.loginWithVmMSI({
             "resource": this.StorageUrl
         });
@@ -68,11 +68,11 @@ export class AzureStorageService {
         return creds;
     }
 
-    private async LoginWithServicePrincipalKey() : Promise<ServiceClientCredentials> {
+    private async loginWithServicePrincipalKey() : Promise<ServiceClientCredentials> {
         return msRestNodeAuth.loginWithServicePrincipalSecretWithAuthResponse(
-            this.auth.armClientId,
-            this.auth.armClientSecret,
-            this.auth.armTenantId,
+            this.connectedService.clientId,
+            this.connectedService.clientSecret,
+            this.connectedService.tenantId,
             {
                 "tokenAudience": this.StorageUrl
             } as AzureTokenCredentialsOptions
@@ -81,10 +81,10 @@ export class AzureStorageService {
         });
     }
 
-    private async LoginWithServicePrincipalCertificate() : Promise<ServiceClientCredentials> {
+    private async loginWithServicePrincipalCertificate() : Promise<ServiceClientCredentials> {
         var creds = await msRestNodeAuth.loginWithServicePrincipalCertificate(
-            this.auth.armClientId,
-            this.auth.armClientCertificatePath,
+            this.connectedService.clientId,
+            this.connectedService.clientCertificatePath,
             this.StorageUrl
         );
 

@@ -5,7 +5,7 @@ import { Terraform } from "./Terraform";
 import { TaskAuthentication } from './TaskAuthentication';
 import { TaskOptions } from './TaskOptions';
 import { TerraformCliTask } from './TerraformCliTask';
-import { TerraformAuthentication } from './TerraformAuthentication';
+import { TerraformAuthentication } from './Provider/Azure/TerraformAuthentication';
 import task = require('azure-pipelines-task-lib/task');
 import { TaskResult } from "azure-pipelines-task-lib/task";
 
