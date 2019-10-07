@@ -1,0 +1,41 @@
+trigger:
+  batch: true
+  branches:
+    include:
+    - master
+    - multi_stage_deploy
+  paths:
+    include:
+    - terraform/*
+    - src/demo-ruby-webapp/*
+    - azure-pipelines.ruby.yml
+
+pr:
+  autoCancel: true
+ 
+variables:
+  sandboxAzureSubscription: 'MTC Denver Sandbox'
+  productionAzureSubscription: 'MTC Denver Production'
+  sandboxWebAppName: 'mtcden-demo-webapp-ruby-sandbox-app'
+  productionWebAppName: 'mtcden-demo-webapp-ruby-production-app'
+  acrName: mtcdensandboxdemo
+  dockerNamespace: $(acrName).azurecr.io
+  dockerImageName: msus-demos/demo-ruby-webapp
+  storageAccountName: 
+
+# Build and Test
+stages:
+- stage: BuildAndTest
+  displayName: Build and Test Tasks
+  jobs:
+  - job: BuildAndTest
+    displayName: Build and Test Terraform Task
+    strategy: parallel
+    pool: 
+      vmImage: 'Ubuntu-16.04'
+    steps:
+    - script: |
+        npm install
+        npm run-script build
+      workingDirectory: ${{ parameters.workingDirectory }}
+      displayName: Build, test and package the Task

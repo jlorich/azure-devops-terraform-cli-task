@@ -10,7 +10,7 @@ import { RemoteConnectedServiceOptions } from "./RemoteConnectedServiceOptions"
  */
 @injectable()
 export class RemoteProvider implements TerraformProvider {
-    private cliConfigFileLocation : string;
+    private cliConfigFileLocation : string = "";
 
     constructor(private options : TaskOptions) {
         

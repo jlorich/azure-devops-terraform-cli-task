@@ -1,0 +1,16 @@
+parameters:
+  workingDirectory:
+
+jobs:
+- job: BuildAndTest
+  displayName: Build and Test
+  pool:
+    vmImage: 'Ubuntu-16.04'
+
+  steps:
+
+  - script: |
+      npm install
+      npm run-script build
+    workingDirectory: ${{ parameters.workingDirectory }}
+    displayName: Build, test and package the Task

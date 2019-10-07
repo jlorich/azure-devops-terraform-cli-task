@@ -3,13 +3,13 @@ import fs = require("fs");
 import os = require("os");
 
 import { injectable } from "inversify";
-import { Terraform } from "./Terraform";
+import { TerraformCommandRunner } from "./TerraformCommandRunner";
 import { TaskOptions } from './TaskOptions';
 
 @injectable()
 export class TerraformCliTask {
 
-    constructor(private terraform : Terraform, private options: TaskOptions) {
+    constructor(private terraform : TerraformCommandRunner, private options: TaskOptions) {
         
     }
 
@@ -19,7 +19,7 @@ export class TerraformCliTask {
         }
 
         let scriptPath = this.InitScriptAtPath();
-        await this.terraform.exec(scriptPath);
+        await this.terraform.cli(scriptPath);
     }
 
     private InitScriptAtPath(): string {

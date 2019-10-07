@@ -1,5 +1,5 @@
 {
-  "name": "azure-devops-terraform-cli-extension",
+  "name": "azure-pipelines-terraform-installer-task",
   "version": "1.0.0",
   "description": "",
   "main": ".bin/index.js",

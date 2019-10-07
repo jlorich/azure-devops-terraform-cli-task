@@ -1,5 +1,6 @@
 import task = require('azure-pipelines-task-lib/task');
 import { injectable } from "inversify";
+import { TerraformProviderType } from "./Provider/TerraformProviderType"
 
 /**
  * Strong-type accessor for Task configuration
@@ -20,6 +21,7 @@ export class TaskOptions {
     readonly Script : string;
     readonly Initialize : boolean;
     readonly TempDir : string;
+    readonly TerraformProviderType : TerraformProviderType;
 
     constructor() {
         this.ConnectedServiceName = task.getInput("connectedServiceName", true)
@@ -36,5 +38,22 @@ export class TaskOptions {
         this.Initialize = task.getInput("initialize") === "true";
         
         this.TempDir = task.getVariable("Agent.TempDirectory");
+
+        switch (task.getInput("providerType")) {
+            case "Azure":
+                this.TerraformProviderType = TerraformProviderType.Azure;
+                break;
+            case "AWS":
+                this.TerraformProviderType = TerraformProviderType.Aws;
+                break;
+            case "GCP":
+                this.TerraformProviderType = TerraformProviderType.Gcp;
+                break;
+            case "Remote":
+                this.TerraformProviderType = TerraformProviderType.Remote;
+                break;
+            default:
+                this.TerraformProviderType = TerraformProviderType.Unknown;
+        }
     }
 }

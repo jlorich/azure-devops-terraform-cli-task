@@ -8,7 +8,7 @@ import { TaskOptions } from "./TaskOptions";
 import { TerraformProvider } from "./Provider/TerraformProvider";
 
 @injectable()
-export class Terraform {
+export class TerraformCommandRunner {
     private readonly terraform : ToolRunner;
 
     constructor(

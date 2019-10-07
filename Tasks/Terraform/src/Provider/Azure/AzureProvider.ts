@@ -14,14 +14,14 @@ export class AzureProvider implements TerraformProvider {
     private armConnectedService: ARMConnectedServiceOptions;
     
     constructor(private options : TaskOptions) {
-        
+        this.armConnectedService = new ARMConnectedServiceOptions(this.options.ConnectedServiceName);
     }
 
     /**
      * Loads the ARM connected service information
      */
     public async configure(): Promise<void> {
-        this.armConnectedService = new ARMConnectedServiceOptions(this.options.ConnectedServiceName);
+        
     }
 
     /**
