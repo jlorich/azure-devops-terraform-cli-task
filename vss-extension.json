@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
-    "id": "TerraformCli",
-    "name": "Terraform CLI ",
+    "id": "Terraform",
+    "name": "Terraform ",
     "version": "0.1.52",
     "publisher": "jlorich",
     "targets": [

@@ -33,7 +33,15 @@ stages:
     strategy: parallel
     pool: 
       vmImage: 'Ubuntu-16.04'
+
     steps:
+    # Use GitVersion to determine the proper release version
+    - task: gittools.gitversion.gitversion-task.GitVersion@4
+      inputs:
+        preferBundledVersion: false
+      displayName: Determine Semantic Version
+    
+    # Build the package
     - script: |
         npm install
         npm run-script build
