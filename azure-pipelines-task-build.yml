@@ -6,9 +6,8 @@ jobs:
   displayName: Build and Test
   pool:
     vmImage: 'Ubuntu-16.04'
-
   steps:
-
+  # Build the package
   - script: |
       npm install
       npm run-script build

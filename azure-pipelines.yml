@@ -28,22 +28,6 @@ stages:
 - stage: BuildAndTest
   displayName: Build and Test Tasks
   jobs:
-  - job: BuildAndTest
-    displayName: Build and Test Terraform Task
-    strategy: parallel
-    pool: 
-      vmImage: 'Ubuntu-16.04'
-
-    steps:
-    # Use GitVersion to determine the proper release version
-    - task: gittools.gitversion.gitversion-task.GitVersion@4
-      inputs:
-        preferBundledVersion: false
-      displayName: Determine Semantic Version
-    
-    # Build the package
-    - script: |
-        npm install
-        npm run-script build
-      workingDirectory: ${{ parameters.workingDirectory }}
-      displayName: Build, test and package the Task
+  - template: azure-pipelines-task-build.yml
+    parameters:
+      workingDirectory: $(System.DefaultWorkingDirectory)/Tasks/Terraform/
