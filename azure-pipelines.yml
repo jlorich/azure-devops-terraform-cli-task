@@ -3,12 +3,10 @@ trigger:
   branches:
     include:
     - master
-    - multi_stage_deploy
   paths:
     include:
-    - terraform/*
-    - src/demo-ruby-webapp/*
-    - azure-pipelines.ruby.yml
+    - Tasks/*
+    - azure-pipelines-*.yml
 
 pr:
   autoCancel: true
