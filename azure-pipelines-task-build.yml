@@ -6,11 +6,11 @@ steps:
     # Display command output and fail immediately on any errors
     set -e -x
 
-    # Install NPM Packages
-    npm install
-
     # Update package version to build number
     sed -i 's/[TASK_VERSION]/$(Build.BuildNumber)/g' package.json
+
+    # Install NPM Packages
+    npm install
     
     # Build typescript
     tsc --build

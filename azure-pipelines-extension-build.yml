@@ -11,6 +11,12 @@ jobs:
     inputs:
       runtime: 'core'
 
+  - script: echo %Action%%BuildVersion%
+    displayName: 'Set build version'
+    env:
+      Action: '##vso[build.updatebuildnumber]'
+      BuildVersion: $(GitVersion.NuGetVersionV2)
+
   # Build and test the Terraform Installer Task
   # - template: azure-pipelines-task-build.yml
   #   parameters:
@@ -26,11 +32,11 @@ jobs:
       # Display command output and fail immediately on any errors
       set -e -x
 
-      # Install deployment dependencies
-      npm install
-      
       # Update the extension version
       sed -i 's/[EXTENSION_VERSION]/$(Build.BuildNumber)/g' vss-extension.json
+
+      # Install deployment dependencies
+      npm install
       
       # Copy the necessary extension files to the output directory
       rsync -avr ./ \
