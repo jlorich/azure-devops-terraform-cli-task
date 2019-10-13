@@ -24,7 +24,7 @@ stages:
         - Terraform
 
 # Staging Extension release
-- stage: Staging
+- stage: Release
   jobs:
   - template: azure-pipelines-extension-release.yml
     parameters:

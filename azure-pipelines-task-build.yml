@@ -13,9 +13,9 @@ steps:
     sed -i -E 's/"version":\s"[0-9/.]+"/"version": "$(GitVersion.MajorMinorPatch)"/g' package.json
 
     # Set the task version
-    sed -i -E 's/"Major":\s"[0-9/.]+"/"Major": "$(GitVersion.Major)"/g' package.json
-    sed -i -E 's/"Minor":\s"[0-9/.]+"/"Minor": "$(GitVersion.Minor)"/g' package.json
-    sed -i -E 's/"Patch":\s"[0-9/.]+"/"Patch": "$(GitVersion.Patch)"/g' package.json
+    sed -i -E 's/"Major":\s"[0-9/.]+"/"Major": "$(GitVersion.Major)"/g' task.json
+    sed -i -E 's/"Minor":\s"[0-9/.]+"/"Minor": "$(GitVersion.Minor)"/g' task.json
+    sed -i -E 's/"Patch":\s"[0-9/.]+"/"Patch": "$(GitVersion.Patch)"/g' task.json
 
   workingDirectory: ${{ parameters.tasksDirectory }}/${{ parameters.taskName }}
   displayName: Set versions for the ${{ parameters.taskName }} task
