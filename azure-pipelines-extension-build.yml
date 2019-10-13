@@ -1,0 +1,42 @@
+- job: Build
+  displayName: Build and Test
+
+  pool:
+    vmImage: 'Ubuntu-16.04'
+
+  steps:
+  # Use GitVersion to set build number
+  - task: GitVersion@5
+    inputs:
+      runtime: 'core'
+
+  # Build and test the Terraform Installer Task
+  - template: azure-pipelines-task-build.yml
+    parameters:
+      workingDirectory: $(System.DefaultWorkingDirectory)/Tasks/TerraformInstaller
+
+  # Build and test the Terraform Task
+  - template: azure-pipelines-task-build.yml
+    parameters:
+      workingDirectory: $(System.DefaultWorkingDirectory)/Tasks/Terraform
+  
+  # Build the necessary extension files
+  - script:
+    # Install deployment dependencies
+    npm install
+
+    # Update the extension version
+    sed -i 's/[EXTENSION_VERSION]/$(Build.BuildNumber)/g' vss-extension.json
+
+    # Copy the necessary extension files to the output directory
+    rsync -avr ./ \
+      --exclude=./* \
+      --include=./node_modules \
+      --include=./package.json \
+      --include=./package-lock.json \
+      --include=./vss-extension.json \
+      $(Build.StagingDirectory)
+
+  # Publish the relevant packages to a pipeline artifact 
+  - publish: $(Build.StagingDirectory)/out
+    artifact: extension

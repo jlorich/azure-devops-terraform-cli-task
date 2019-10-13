@@ -4,28 +4,22 @@ trigger:
     include:
     - master
   paths:
-    include:
-    - Tasks/*
-    - azure-pipelines-*.yml
+    exclude:
+    - readme.md
 
 pr:
   autoCancel: true
- 
-variables:
-  sandboxAzureSubscription: 'MTC Denver Sandbox'
-  productionAzureSubscription: 'MTC Denver Production'
-  sandboxWebAppName: 'mtcden-demo-webapp-ruby-sandbox-app'
-  productionWebAppName: 'mtcden-demo-webapp-ruby-production-app'
-  acrName: mtcdensandboxdemo
-  dockerNamespace: $(acrName).azurecr.io
-  dockerImageName: msus-demos/demo-ruby-webapp
-  storageAccountName: 
 
 # Build and Test
 stages:
-- stage: BuildAndTest
+- stage: Build
   displayName: Build and Test Tasks
   jobs:
-  - template: azure-pipelines-task-build.yml
+  - template: azure-pipelines-extension-build.yml
+
+# Staging Extension release
+- stage: Staging
+  jobs:
+  - template: azure-pipelines-extension-release.yml
     parameters:
-      workingDirectory: $(System.DefaultWorkingDirectory)/Tasks/Terraform/
+      serviceUrl: https://dev.azure.com/jlorich

@@ -1,0 +1,22 @@
+parameters:
+  serviceUrl: 
+
+jobs:
+- job: BuildAndTest
+  displayName: Build and Test
+  pool:
+    vmImage: 'Ubuntu-16.04'
+  steps:
+  - download: current
+    artifact: extension
+
+  # Upload the extension
+  - script: |
+      tfx login \
+        --token $SYSTEM_ACCESSTOKEN
+        --service-url ${{serviceUrl}}
+
+      tfx extension publish
+    env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+    displayName: Build, test and package the Task

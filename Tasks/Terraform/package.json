@@ -1,6 +1,6 @@
 {
   "name": "azure-pipelines-terraform-installer-task",
-  "version": "1.0.0",
+  "version": "[TASK_VERSION]",
   "description": "",
   "main": ".bin/index.js",
   "scripts": {
