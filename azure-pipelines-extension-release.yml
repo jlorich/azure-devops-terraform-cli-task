@@ -26,10 +26,10 @@ jobs:
 
       # Publish the extension
       tfx extension publish \
-        --token $(AccessToken) \
+        --token $PERSONAL_ACCESS_TOKEN \
         --service-url https://marketplace.visualstudio.com \
         --no-prompt
     env:
-      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+      PERSONAL_ACCESS_TOKEN: $(PersonalAccessToken)
     workingDirectory: $(Pipeline.Workspace)/extension
     displayName: Build, test and package the Task
