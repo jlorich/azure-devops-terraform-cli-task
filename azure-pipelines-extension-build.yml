@@ -22,7 +22,7 @@ jobs:
       workingDirectory: $(System.DefaultWorkingDirectory)/Tasks/Terraform
   
   # Build the necessary extension files
-  - script:
+  - script: |
       # Install deployment dependencies
       npm install
       
