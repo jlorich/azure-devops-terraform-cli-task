@@ -1,13 +1,13 @@
 {
   "name": "azure-pipelines-terraform-installer",
   "version": "0.0.1",
-  "description": "",
+  "description": "A Terraform installer task for Azure Pipelines",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "Mozilla Public License Version 2.0",
+  "license": "MPL-2.0",
   "dependencies": {
     "@types/mocha": "^5.2.7",
     "@types/node": "^6.0.101",

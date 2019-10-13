@@ -1,10 +1,10 @@
 {
   "name": "azure-pipelines-terraform-task",
   "version": "0.0.1",
-  "description": "",
+  "description": "A Terraform task for Azure Pipelines",
   "main": ".bin/index.js",
   "author": "",
-  "license": "Mozilla Public License Version 2.0",
+  "license": "MPL-2.0",
   "dependencies": {
     "@azure/arm-storage": "^9.0.1",
     "@azure/ms-rest-nodeauth": "^2.0.2",

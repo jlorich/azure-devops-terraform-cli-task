@@ -13,9 +13,11 @@ steps:
     sed -i -E 's/"version":\s"[0-9/.]+"/"version": "$(GitVersion.MajorMinorPatch)"/g' package.json
 
     # Set the task version
-    sed -i -E 's/"Major":\s"[0-9/.]+"/"Major": "$(GitVersion.Major)"/g' task.json
-    sed -i -E 's/"Minor":\s"[0-9/.]+"/"Minor": "$(GitVersion.Minor)"/g' task.json
-    sed -i -E 's/"Patch":\s"[0-9/.]+"/"Patch": "$(GitVersion.Patch)"/g' task.json
+    sed -i -E 's/"Major":\s[0-9]+/"Major": $(GitVersion.Major)/g' task.json
+    sed -i -E 's/"Minor":\s[0-9]+/"Minor": $(GitVersion.Minor)/g' task.json
+    sed -i -E 's/"Patch":\s[0-9]+/"Patch": $(GitVersion.Patch)/g' task.json
+
+    cat task.json
 
   workingDirectory: ${{ parameters.tasksDirectory }}/${{ parameters.taskName }}
   displayName: Set versions for the ${{ parameters.taskName }} task
@@ -55,6 +57,6 @@ steps:
       --include=package-lock.json \
       --include=task.json \
       --exclude=* \
-      ./ $(Build.StagingDirectory)/Tasks/${{ parameters.taskName }}
+      ./ ${{ parameters.tasksDirectory }}/${{ parameters.taskName }}
   workingDirectory: ${{ parameters.tasksDirectory }}/${{ parameters.taskName }}
   displayName: Package the ${{ parameters.taskName }} task for release
