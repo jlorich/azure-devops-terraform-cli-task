@@ -32,4 +32,4 @@ jobs:
     env:
       PERSONAL_ACCESS_TOKEN: $(PersonalAccessToken)
     workingDirectory: $(Pipeline.Workspace)/extension
-    displayName: Build, test and package the Task
+    displayName: Publish the extension

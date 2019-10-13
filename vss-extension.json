@@ -1,8 +1,8 @@
 {
     "manifestVersion": 1,
-    "id": "Terraform",
-    "name": "Terraform ",
-    "version": "0.0.1",
+    "id": "terraform-pipelines-extension-dev",
+    "name": "Terraform",
+    "version": "0.0.8",
     "publisher": "jlorich",
     "targets": [
         {
@@ -29,17 +29,17 @@
                 "ms.vss-distributed-task.tasks"
             ],
             "properties": {
-                "name": "terraformInstaller"
+                "name": "Tasks/TerraformInstaller"
             }
         },
         {
-            "id": "5619d23d-fb03-4459-a295-5958fd240452",
+            "id": "653507a3-d921-47dc-8fed-c5649d8e9e0e",
             "type": "ms.vss-distributed-task.task",
             "targets": [
                 "ms.vss-distributed-task.tasks"
             ],
             "properties": {
-                "name": "terraform"
+                "name": "Tasks/Terraform"
             }
         }
     ]

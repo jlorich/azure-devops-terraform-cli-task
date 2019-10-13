@@ -1,5 +1,5 @@
 {
-    "id": "5619d23d-fb03-4459-a295-5958fd240452",
+    "id": "653507a3-d921-47dc-8fed-c5649d8e9e0e",
     "name": "terraform",
     "friendlyName": "Terraform",
     "description": "A task for running Terraform commands",
@@ -112,24 +112,13 @@
         },
 
         {
-            "name": "initialize",
-            "type": "bool",
-            "label": "Initialize Terraform",
-            "defaultValue": "true",
-            "required": true,
-            "visibleRule": "command = CLI",
-            "helpMarkDown": "Runs terraform init before executing the provided script"
-        },
-
-        {
-            "name": "useTargetConnectedServiceForBackend",
+            "name": "backendAzureUseTargetConnectedServiceForBackend",
             "type": "bool",
             "label": "Use provider connection for backend",
             "defaultValue": "true",
-            "visibleRule": "command = CLI && initialize = true",
             "required": false,
             "helpMarkDown": "Uses the providers connected service to access the storage backend",
-            "groupName": "init"
+            "groupName": "backendAzure"
         },
 
         {
@@ -138,7 +127,7 @@
             "label": "Backend Azure subscription",
             "required": true,
             "helpMarkDown": "Select the Azure Resource Manager subscription your Terraform backend will live in.",
-            "visibleRule": "useTargetConnectedServiceForBackend = false",
+            "visibleRule": "backendAzureUseTargetConnectedServiceForBackend = false",
             "properties": {
                 "EndpointFilterRule": "ScopeLevel != ManagementGroup"
             },
@@ -151,7 +140,7 @@
             "defaultValue": "",
             "required": true,
             "helpMarkDown": "Specify a pre-existing ARM storage account. It will be used to store your backend Terraform state.",
-            "visibleRule": "useTargetConnectedServiceForBackend = false",
+            "visibleRule": "backendAzureUseTargetConnectedServiceForBackend = false",
             "properties": {
                 "EditableOptions": "True"
             },
@@ -164,7 +153,7 @@
             "defaultValue": "",
             "required": true,
             "helpMarkDown": "Specify a pre-existing ARM storage account. It will be used to store your backend Terraform state.",
-            "visibleRule": "useTargetConnectedServiceForBackend = true",
+            "visibleRule": "backendAzureUseTargetConnectedServiceForBackend = true",
             "properties": {
                 "EditableOptions": "True"
             },

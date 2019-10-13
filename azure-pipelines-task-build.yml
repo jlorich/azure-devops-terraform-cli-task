@@ -22,6 +22,9 @@ steps:
 
 # Built and test the extension
 - script: |
+    # Display command output and fail immediately on any errors
+    set -e -x
+
     # Install NPM Packages
     npm install --dev
     
@@ -35,8 +38,11 @@ steps:
 
 # Prune and copy files to the artifact staging directory
 - script: |
+    # Display command output and fail immediately on any errors
+    set -e -x
+
     # Remove all dev dependencies prior to release
-    npm prune --production    
+    npm prune --production
     
     # Ensure the destination path exists
     mkdir -p $(Build.StagingDirectory)/Tasks/
