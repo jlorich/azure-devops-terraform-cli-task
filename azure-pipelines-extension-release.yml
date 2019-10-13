@@ -28,9 +28,10 @@ jobs:
       tfx login \
         --token $SYSTEM_ACCESSTOKEN
         --service-url ${{ parameters.serviceUrl }}
+        --no-prompt
 
       # Publish the extension
-      tfx extension publish
+      tfx extension publish --no-prompt
     env:
       SYSTEM_ACCESSTOKEN: $(System.AccessToken)
     workingDirectory: (Pipeline.Workspace)/extension
