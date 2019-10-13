@@ -13,7 +13,7 @@ pr:
 # Build and Test
 stages:
 - stage: Build
-  displayName: Build and Test Tasks
+  displayName: Build and Test
   jobs:
   - template: azure-pipelines-extension-build.yml
 
