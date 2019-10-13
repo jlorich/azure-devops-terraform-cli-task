@@ -15,10 +15,15 @@ jobs:
       # Display command output and fail immediately on any errors
       set -e -x
 
+      # Install the latext command line task for publishing extensions
+      npm install -g tfx-cli
+
+      # Log in to Azure DevOps with tfx
       tfx login \
         --token $SYSTEM_ACCESSTOKEN
         --service-url ${{ parameters.serviceUrl }}
 
+      # Publish the extension
       tfx extension publish
     env:
       SYSTEM_ACCESSTOKEN: $(System.AccessToken)

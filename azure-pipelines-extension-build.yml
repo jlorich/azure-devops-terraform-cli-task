@@ -26,26 +26,17 @@ jobs:
     parameters:
       workingDirectory: $(System.DefaultWorkingDirectory)/Tasks/Terraform
   
-  # Build the necessary extension files
+  # Package the extension manifest
   - script: |
       # Display command output and fail immediately on any errors
       set -e -x
 
       # Update the extension version
       sed -i 's/{{EXTENSION_VERSION}}/$(GitVersion.MajorMinorPatch)/g' vss-extension.json
+    
+      # Copy the extension manifest to the output directory
+      cp ./vss-extension.json ./$(Build.StagingDirectory)
 
-      # Install deployment dependencies
-      npm install --dev
-     
-      # Copy the necessary extension files to the output directory
-      rsync -avr ./ \
-        --exclude=* \
-        --include=./node_modules \
-        --include=./package.json \
-        --include=./package-lock.json \
-        --include=./vss-extension.json \
-        $(Build.StagingDirectory)
-
-  # Publish the relevant packages to a pipeline artifact 
+  # Publish the finished extension to a pipeline artifact 
   - publish: $(Build.StagingDirectory)
     artifact: extension
