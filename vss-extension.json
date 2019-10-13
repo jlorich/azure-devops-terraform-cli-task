@@ -3,7 +3,7 @@
     "id": "Terraform",
     "name": "Terraform ",
     "version": "0.0.1",
-    "publisher": "HashiCorp",
+    "publisher": "jlorich",
     "targets": [
         {
             "id": "Microsoft.VisualStudio.Services"
