@@ -10,8 +10,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@azure/arm-storage": "^9.0.1",
-    "@azure/ms-rest-nodeauth": "^2.0.2",
     "azure-pipelines-task-lib": "^2.8.0",
     "config": "^3.2.1",
     "inversify": "^5.0.1",
@@ -19,6 +17,9 @@
     "tsyringe": "^3.3.0"
   },
   "devDependencies": {
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.6.8",
+    "@types/q": "^1.5.2",
     "copyfiles": "^2.1.0",
     "mocha": "^5.2.0",
     "tfx-cli": "^0.6.4",
