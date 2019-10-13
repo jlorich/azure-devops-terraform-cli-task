@@ -12,9 +12,9 @@ jobs:
       runtime: 'core'
 
   # Build and test the Terraform Installer Task
-  - template: azure-pipelines-task-build.yml
-    parameters:
-      workingDirectory: $(System.DefaultWorkingDirectory)/Tasks/TerraformInstaller
+  # - template: azure-pipelines-task-build.yml
+  #   parameters:
+  #     workingDirectory: $(System.DefaultWorkingDirectory)/Tasks/TerraformInstaller
 
   # Build and test the Terraform Task
   - template: azure-pipelines-task-build.yml
