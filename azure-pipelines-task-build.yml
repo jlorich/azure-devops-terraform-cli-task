@@ -1,7 +1,10 @@
 parameters:
-  workingDirectory:
+  tasksDirectory:
+  taskName:
 
 steps:
+
+# Update package vertions
 - script: |
     # Display command output and fail immediately on any errors
     set -e -x
@@ -14,9 +17,10 @@ steps:
     sed -i -E 's/"Minor":\s"[0-9/.]+"/"Minor": "$(GitVersion.Minor)"/g' package.json
     sed -i -E 's/"Patch":\s"[0-9/.]+"/"Patch": "$(GitVersion.Patch)"/g' package.json
 
-  workingDirectory: ${{ parameters.workingDirectory }}
-  displayName: Set package and task Versions
+  workingDirectory: ${{ parameters.tasksDirectory }}/${{ parameters.taskName }}
+  displayName: Set versions for the ${{ parameters.taskName }} task
 
+# Built and test the extension
 - script: |
     # Install NPM Packages
     npm install --dev
@@ -26,18 +30,16 @@ steps:
 
     # Run tests
    
-  workingDirectory: ${{ parameters.workingDirectory }}
-  displayName: Build and test the task
+  workingDirectory: ${{ parameters.tasksDirectory }}/${{ parameters.taskName }}
+  displayName: Build and test the ${{ parameters.taskName }} task
 
+# Prune and copy files to the artifact staging directory
 - script: |
     # Remove all dev dependencies prior to release
     npm prune --production    
     
     # Ensure the destination path exists
     mkdir -p $(Build.StagingDirectory)/Tasks/
-
-    # Get the task name from the working directory
-    taskname=`basename "$PWD"`
 
     # Copy all task files to the staging output path
     rsync -avr \
@@ -46,6 +48,6 @@ steps:
       --include=package-lock.json \
       --include=task.json \
       --exclude=* \
-      ./ $(Build.StagingDirectory)/Tasks/$taskname  
-  workingDirectory: ${{ parameters.workingDirectory }}
-  displayName: Package the task for release
+      ./ $(Build.StagingDirectory)/Tasks/${{ parameters.taskName }}
+  workingDirectory: ${{ parameters.tasksDirectory }}/${{ parameters.taskName }}
+  displayName: Package the ${{ parameters.taskName }} task for release

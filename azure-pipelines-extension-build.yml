@@ -1,4 +1,6 @@
 parameters:
+  workingDirectory: $(System.DefaultWorkingDirectory)
+  taskDirectory: $(System.DefaultWorkingDirectory)/Tasks
   tasks:
 
 jobs:
@@ -19,11 +21,12 @@ jobs:
       echo "##vso[build.updatebuildnumber]$(GitVersion.MajorMinorPatch)"
     displayName: 'Set Bulid Number'
 
-  - ${{ each task in parameters.tasks }}:
-    # Build and test the Terraform Installer Task
+  # Build and test each listed task
+  - ${{ each taskName in parameters.tasks }}:
     - template: azure-pipelines-task-build.yml
       parameters:
-        workingDirectory: $(System.DefaultWorkingDirectory)/Tasks/${{ task }}
+        tasksDirectory: ${{ parameters.taskDirectory }}
+        taskName: ${{ taskName }}
   
   # Package the extension manifest
   - script: |
@@ -35,6 +38,9 @@ jobs:
     
       # Copy the extension manifest to the output directory
       cp ./vss-extension.json $(Build.StagingDirectory)/
+
+    workingDirectory: ${{ parameters.workingDirectory }}
+    displayName: Package the extension manifest
 
   # Publish the finished extension to a pipeline artifact 
   - publish: $(Build.StagingDirectory)
