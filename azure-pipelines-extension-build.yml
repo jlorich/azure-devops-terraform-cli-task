@@ -13,8 +13,8 @@ jobs:
   
   # Set the BuildNumber
   - script: |
-      echo "##vso[build.updatebuildnumber]$(GitVersion.MajorMinorPatch)
-    displayName: 'Set build version'
+      echo "##vso[build.updatebuildnumber]$(GitVersion.MajorMinorPatch)"
+    displayName: 'Set Bulid Number'
 
   # Build and test the Terraform Installer Task
   # - template: azure-pipelines-task-build.yml
