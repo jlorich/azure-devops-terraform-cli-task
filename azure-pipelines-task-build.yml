@@ -22,7 +22,6 @@ steps:
       --include=./package.json \
       --include=./package-lock.json \
       --include=./task.json \
-      $(Build.StagingDirectory)/Tasks/
-    
+      $(Build.StagingDirectory)/Tasks/  
   workingDirectory: ${{ parameters.workingDirectory }}
   displayName: Build, test and package the Task
