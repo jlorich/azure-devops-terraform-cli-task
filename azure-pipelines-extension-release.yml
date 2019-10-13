@@ -23,7 +23,7 @@ jobs:
       set -e -x
 
       # Install the latext command line task for publishing extensions
-      npm install -g tfx-cli
+      sudo npm install -g tfx-cli
 
       # Log in to Azure DevOps with tfx
       tfx login \
