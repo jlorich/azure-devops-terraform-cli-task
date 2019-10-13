@@ -17,6 +17,7 @@ steps:
 
     # Update task patch version
     sed -i 's/{{PATCH_VERSION}}/$(GitVersion.Patch)/g' task.json
+  workingDirectory: ${{ parameters.workingDirectory }}
   displayName: Set Package and Task Versions
 
 - script: |
