@@ -5,13 +5,8 @@ jobs:
 - job: BuildAndTest
   displayName: Build and Test
 
-  # Set the job to run on Ubuntu
   pool:
     vmImage: 'Ubuntu-16.04'
-
-  # Ensure the default repository is not cloned, as it's unnecessary
-  resources:
-    repositories:
   
   steps:
   - download: current
