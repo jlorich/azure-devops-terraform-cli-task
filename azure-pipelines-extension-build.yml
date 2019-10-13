@@ -1,3 +1,4 @@
+jobs:
 - job: Build
   displayName: Build and Test
 
