@@ -2,13 +2,26 @@ parameters:
   workingDirectory:
 
 steps:
-- script: |
+- displayName: Set Package and Task Versions
+  script: |
     # Display command output and fail immediately on any errors
     set -e -x
 
     # Update package version to build number
-    sed -i 's/[TASK_VERSION]/$(Build.BuildNumber)/g' package.json
+    sed -i 's/{{PACKAGE_VERSION}}/$(Build.BuildNumber)/g' package.json
 
+    # Update task major version
+    sed -i 's/{{MAJOR_VERSION}}/$(GitVersion.Major)/g' task.json
+
+    # Update task minor version
+    sed -i 's/{{MINOR_VERSION}}/$(GitVersion.Minor)/g' task.json
+
+    # Update task patch version
+    sed -i 's/{{PATCH_VERSION}}/$(GitVersion.Patch)/g' task.json
+
+- displayName: Build, test, and package the Task
+  workingDirectory: ${{ parameters.workingDirectory }}
+  script: |
     # Install NPM Packages
     npm install
     
@@ -26,5 +39,4 @@ steps:
       --include=./package-lock.json \
       --include=./task.json \
       $(Build.StagingDirectory)/Tasks/  
-  workingDirectory: ${{ parameters.workingDirectory }}
-  displayName: Build, test and package the Task
+  

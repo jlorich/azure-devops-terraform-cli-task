@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "Terraform",
     "name": "Terraform ",
-    "version": "[EXTENSION_VERSION]",
+    "version": "{{EXTENSION_VERSION}}",
     "publisher": "jlorich",
     "targets": [
         {

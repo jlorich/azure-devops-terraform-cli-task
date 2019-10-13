@@ -32,7 +32,7 @@ jobs:
       set -e -x
 
       # Update the extension version
-      sed -i 's/[EXTENSION_VERSION]/$(Build.BuildNumber)/g' vss-extension.json
+      sed -i 's/{{EXTENSION_VERSION}}/$(Build.BuildNumber)/g' vss-extension.json
 
       # Install deployment dependencies
       npm install
