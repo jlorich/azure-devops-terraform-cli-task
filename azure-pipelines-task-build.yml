@@ -40,10 +40,10 @@ steps:
 
     # Copy all task files to the staging output path
     rsync -avr \
-      --include=./node_modules \
-      --include=./package.json \
-      --include=./package-lock.json \
-      --include=./task.json \
+      --include=node_modules \
+      --include=package.json \
+      --include=package-lock.json \
+      --include=task.json \
       --exclude=* \
       ./ $(Build.StagingDirectory)/Tasks/$taskname  
   workingDirectory: ${{ parameters.workingDirectory }}
