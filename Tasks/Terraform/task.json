@@ -56,7 +56,7 @@
             "name": "provider",
             "type": "picklist",
             "label": "Provider",
-            "defaultValue": "azure",
+            "defaultValue": "Azure",
             "required": true,
             "helpMarkDown": "Select a Terraform provider",
             "visibleRule": "command != init && command != validate",
