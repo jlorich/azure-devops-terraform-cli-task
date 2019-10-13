@@ -34,5 +34,5 @@ jobs:
       tfx extension publish --no-prompt
     env:
       SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-    workingDirectory: (Pipeline.Workspace)/extension
+    workingDirectory: $(Pipeline.Workspace)/extension
     displayName: Build, test and package the Task
