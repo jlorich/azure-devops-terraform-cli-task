@@ -35,6 +35,9 @@ steps:
     # Ensure the destination path exists
     mkdir -p $(Build.StagingDirectory)/Tasks/
 
+    # Get the task name from the working directory
+    taskname=`basename "$PWD"`
+
     # Copy all task files to the staging output path
     rsync -avr \
       --include=./node_modules \
@@ -42,6 +45,6 @@ steps:
       --include=./package-lock.json \
       --include=./task.json \
       --exclude=* \
-      . $(Build.StagingDirectory)/Tasks/  
+      ./ $(Build.StagingDirectory)/Tasks/$taskname  
   workingDirectory: ${{ parameters.workingDirectory }}
   displayName: Package the task for release
