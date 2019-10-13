@@ -35,8 +35,8 @@ jobs:
       sed -i 's/{{EXTENSION_VERSION}}/$(GitVersion.MajorMinorPatch)/g' vss-extension.json
 
       # Install deployment dependencies
-      npm install
-      
+      npm install --dev
+     
       # Copy the necessary extension files to the output directory
       rsync -avr ./ \
         --exclude=* \
