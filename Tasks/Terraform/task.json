@@ -1,6 +1,6 @@
 {
     "id": "5619d23d-fb03-4459-a295-5958fd240452",
-    "name": "Terraform",
+    "name": "terraform",
     "friendlyName": "Terraform",
     "description": "A task for running Terraform commands",
     "helpMarkDown": "",
@@ -11,9 +11,9 @@
         "Release"
     ],
     "version": {
-        "Major": {{MAJOR_VERSION}},
-        "Minor": {{MINOR_VERSION}},
-        "Patch": {{PATCH_VERSION}}
+        "Major": 0,
+        "Minor": 0,
+        "Patch": 1
     },
     "instanceNameFormat": "Terraform",
     "groups": [

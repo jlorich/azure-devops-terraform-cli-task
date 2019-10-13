@@ -1,6 +1,6 @@
 {
   "name": "azure-pipelines-terraform-task",
-  "version": "{{PACKAGE_VERSION}}",
+  "version": "0.0.1",
   "description": "",
   "main": ".bin/index.js",
   "author": "",

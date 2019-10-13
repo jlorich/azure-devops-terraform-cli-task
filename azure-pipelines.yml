@@ -16,6 +16,11 @@ stages:
   displayName: Build and Test
   jobs:
   - template: azure-pipelines-extension-build.yml
+    parameters:
+      publisher: jlorich
+      tasks:
+        - TerraformInstaller
+        - Terraform
 
 # Staging Extension release
 - stage: Staging

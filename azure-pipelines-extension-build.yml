@@ -1,3 +1,6 @@
+parameters:
+  tasks:
+
 jobs:
 - job: Build
   displayName: Build and Test
@@ -16,15 +19,11 @@ jobs:
       echo "##vso[build.updatebuildnumber]$(GitVersion.MajorMinorPatch)"
     displayName: 'Set Bulid Number'
 
-  # Build and test the Terraform Installer Task
-  - template: azure-pipelines-task-build.yml
-    parameters:
-      workingDirectory: $(System.DefaultWorkingDirectory)/Tasks/TerraformInstaller
-
-  # Build and test the Terraform Task
-  - template: azure-pipelines-task-build.yml
-    parameters:
-      workingDirectory: $(System.DefaultWorkingDirectory)/Tasks/Terraform
+  - ${{ each task in parameters.tasks }}
+    # Build and test the Terraform Installer Task
+    - template: azure-pipelines-task-build.yml
+      parameters:
+        workingDirectory: $(System.DefaultWorkingDirectory)/Tasks/${{ task }}
   
   # Package the extension manifest
   - script: |
@@ -32,7 +31,7 @@ jobs:
       set -e -x
 
       # Update the extension version
-      sed -i 's/{{EXTENSION_VERSION}}/$(GitVersion.MajorMinorPatch)/g' vss-extension.json
+      sed -i -E 's/"version":\s"[0-9/.]+"/"version": "$(GitVersion.MajorMinorPatch)"/g' vss-extension.json
     
       # Copy the extension manifest to the output directory
       cp ./vss-extension.json $(Build.StagingDirectory)/

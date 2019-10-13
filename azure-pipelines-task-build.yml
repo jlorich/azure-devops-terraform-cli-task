@@ -7,12 +7,13 @@ steps:
     set -e -x
 
     # Set the package version
-    sed -i 's/{{PACKAGE_VERSION}}/$(GitVersion.MajorMinorPatch)/g' package.json
+    sed -i -E 's/"version":\s"[0-9/.]+"/"version": "$(GitVersion.MajorMinorPatch)"/g' package.json
 
     # Set the task version
-    sed -i 's/{{MAJOR_VERSION}}/$(GitVersion.Major)/g' task.json
-    sed -i 's/{{MINOR_VERSION}}/$(GitVersion.Minor)/g' task.json
-    sed -i 's/{{PATCH_VERSION}}/$(GitVersion.Patch)/g' task.json
+    sed -i -E 's/"Major":\s"[0-9/.]+"/"Major": "$(GitVersion.Major)"/g' package.json
+    sed -i -E 's/"Minor":\s"[0-9/.]+"/"Minor": "$(GitVersion.Minor)"/g' package.json
+    sed -i -E 's/"Patch":\s"[0-9/.]+"/"Patch": "$(GitVersion.Patch)"/g' package.json
+
   workingDirectory: ${{ parameters.workingDirectory }}
   displayName: Set package and task Versions
 

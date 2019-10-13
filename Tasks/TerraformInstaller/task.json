@@ -1,6 +1,6 @@
 {
     "id": "9b9f2e72-30c3-432b-a835-dd2b1160f3b5",
-    "name": "TerraformInstaller",
+    "name": "terraformInstaller",
     "friendlyName": "Terraform tool installer",
     "description": "Find in cache or download a specific version of Terraform and prepend it to the PATH",
     "author": "HashiCorp",
@@ -12,9 +12,9 @@
     ],
     "demands": [],
     "version": {
-        "Major": {{MAJOR_VERSION}},
-        "Minor": {{MINOR_VERSION}},
-        "Patch": {{PATCH_VERSION}}
+        "Major": 0,
+        "Minor": 0,
+        "Patch": 1
     },
     "instanceNameFormat": "Install Terraform $(terraformVersion)",
     "inputs": [
