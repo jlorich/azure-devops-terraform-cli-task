@@ -3,6 +3,9 @@ parameters:
 
 steps:
 - script: |
+    # Display command output and fail immediately on any errors
+    set -e -x
+
     # Install NPM Packages
     npm install
 

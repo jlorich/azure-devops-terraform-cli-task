@@ -12,6 +12,9 @@ jobs:
 
   # Upload the extension
   - script: |
+      # Display command output and fail immediately on any errors
+      set -e -x
+
       tfx login \
         --token $SYSTEM_ACCESSTOKEN
         --service-url ${{ parameters.serviceUrl }}

@@ -23,6 +23,9 @@ jobs:
   
   # Build the necessary extension files
   - script: |
+      # Display command output and fail immediately on any errors
+      set -e -x
+
       # Install deployment dependencies
       npm install
       
@@ -39,5 +42,5 @@ jobs:
         $(Build.StagingDirectory)
 
   # Publish the relevant packages to a pipeline artifact 
-  - publish: $(Build.StagingDirectory)/out
+  - publish: $(Build.StagingDirectory)
     artifact: extension

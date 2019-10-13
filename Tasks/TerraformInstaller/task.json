@@ -1,7 +1,7 @@
 {
-    "id": "5619d23d-fb03-4459-a295-5958fd240452",
-    "name": "TerraformCli",
-    "friendlyName": "Terraform CLI",
+    "id": "9b9f2e72-30c3-432b-a835-dd2b1160f3b5",
+    "name": "TerraformInstaller",
+    "friendlyName": "Terraform Installer",
     "description": "A task for running authenticated Terraform commands against Azure",
     "helpMarkDown": "",
     "category": "Utility",

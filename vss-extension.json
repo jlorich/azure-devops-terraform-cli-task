@@ -15,7 +15,10 @@
     ],
     "files": [
         {
-            "path": "Terraform"
+            "path": "Tasks/TerraformInstaller"
+        },
+        {
+            "path": "Tasks/Terraform"
         }
     ],
     "contributions": [
@@ -26,7 +29,17 @@
                 "ms.vss-distributed-task.tasks"
             ],
             "properties": {
-                "name": "TerraformCli"
+                "name": "TerraformInstaller"
+            }
+        },
+        {
+            "id": "5619d23d-fb03-4459-a295-5958fd240452",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "Terraform"
             }
         }
     ]
