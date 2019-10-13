@@ -38,7 +38,7 @@ jobs:
       sed -i -E 's/"version":\s"[0-9/.]+"/"version": "$(GitVersion.MajorMinorPatch)"/g' vss-extension.json
 
       # Update the publisher
-      sed -i -E 's/"publisher":\s"[0-9/.]+"/"publisher": "${{ parameters.publisher }}"/g' vss-extension.json
+      sed -i -E 's/"publisher":\s"[a-zA-Z0-9\-_]+"/"publisher": "${{ parameters.publisher }}"/g' vss-extension.json
     
       # Copy the extension manifest to the output directory
       cp ./vss-extension.json $(Build.StagingDirectory)/

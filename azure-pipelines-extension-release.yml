@@ -2,8 +2,8 @@ parameters:
   serviceUrl: 
 
 jobs:
-- job: BuildAndTest
-  displayName: Build and Test
+- job: release
+  displayName: Publish
 
   pool:
     vmImage: 'Ubuntu-16.04'
