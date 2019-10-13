@@ -18,14 +18,23 @@ steps:
     # Update task patch version
     sed -i 's/{{PATCH_VERSION}}/$(GitVersion.Patch)/g' task.json
   workingDirectory: ${{ parameters.workingDirectory }}
-  displayName: Set Package and Task Versions
+  displayName: Set package and task Versions
 
 - script: |
     # Install NPM Packages
-    npm install
+    npm install --dev
     
     # Build typescript
     tsc --build
+
+    # Run tests
+   
+  workingDirectory: ${{ parameters.workingDirectory }}
+  displayName: Build and test the task
+
+- script: |
+    # Remove all dev dependencies prior to release
+    npm prune --production    
     
     # Ensure the destination path exists
     mkdir -p $(Build.StagingDirectory)/Tasks/
@@ -39,4 +48,4 @@ steps:
       --include=./task.json \
       $(Build.StagingDirectory)/Tasks/  
   workingDirectory: ${{ parameters.workingDirectory }}
-  displayName: Build, test, and package the Task
+  displayName: Package the task for release
