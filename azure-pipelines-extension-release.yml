@@ -24,14 +24,11 @@ jobs:
       # Install the latext command line task for publishing extensions
       sudo npm install -g tfx-cli
 
-      # Log in to Azure DevOps with tfx
-      tfx login \
-        --token $SYSTEM_ACCESSTOKEN
-        --service-url ${{ parameters.serviceUrl }}
-        --no-prompt
-
       # Publish the extension
-      tfx extension publish --no-prompt
+      tfx extension publish \
+        --token $(System.AccessToken) \
+        --service-url ${{ parameters.serviceUrl }} \
+        --no-prompt
     env:
       SYSTEM_ACCESSTOKEN: $(System.AccessToken)
     workingDirectory: $(Pipeline.Workspace)/extension

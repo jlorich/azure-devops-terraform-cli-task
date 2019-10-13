@@ -36,12 +36,12 @@ steps:
     mkdir -p $(Build.StagingDirectory)/Tasks/
 
     # Copy all task files to the staging output path
-    rsync -avr . \
-      --exclude=* \
+    rsync -avr \
       --include=./node_modules \
       --include=./package.json \
       --include=./package-lock.json \
       --include=./task.json \
-      $(Build.StagingDirectory)/Tasks/  
+      --exclude=* \
+      . $(Build.StagingDirectory)/Tasks/  
   workingDirectory: ${{ parameters.workingDirectory }}
   displayName: Package the task for release
