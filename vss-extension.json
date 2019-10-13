@@ -3,13 +3,13 @@
     "id": "Terraform",
     "name": "Terraform ",
     "version": "{{EXTENSION_VERSION}}",
-    "publisher": "jlorich",
+    "publisher": "HashiCorp",
     "targets": [
         {
             "id": "Microsoft.VisualStudio.Services"
         }
     ],    
-    "description": "Task for running authorized terraform commands against an Azure ARM Service Connection",
+    "description": "Task for running Terraform on Azure, AWS, GCP, and Terraform Cloud/Enterprise",
     "categories": [
         "Azure Pipelines"
     ],
