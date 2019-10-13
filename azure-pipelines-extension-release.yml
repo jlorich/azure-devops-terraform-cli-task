@@ -27,7 +27,7 @@ jobs:
       # Publish the extension
       tfx extension publish \
         --token $(System.AccessToken) \
-        --service-url ${{ parameters.serviceUrl }} \
+        --service-url https://marketplace.visualstudio.com \
         --no-prompt
     env:
       SYSTEM_ACCESSTOKEN: $(System.AccessToken)
