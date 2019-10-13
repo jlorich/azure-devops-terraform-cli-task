@@ -32,14 +32,14 @@ jobs:
       set -e -x
 
       # Update the extension version
-      sed -i 's/{{EXTENSION_VERSION}}/$(Build.BuildNumber)/g' vss-extension.json
+      sed -i 's/{{EXTENSION_VERSION}}/$(GitVersion.MajorMinorPatch)/g' vss-extension.json
 
       # Install deployment dependencies
       npm install
       
       # Copy the necessary extension files to the output directory
       rsync -avr ./ \
-        --exclude=./* \
+        --exclude=* \
         --include=./node_modules \
         --include=./package.json \
         --include=./package-lock.json \

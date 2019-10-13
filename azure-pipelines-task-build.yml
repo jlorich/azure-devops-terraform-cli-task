@@ -6,16 +6,12 @@ steps:
     # Display command output and fail immediately on any errors
     set -e -x
 
-    # Update package version to build number
-    sed -i 's/{{PACKAGE_VERSION}}/$(Build.BuildNumber)/g' package.json
+    # Set the package version
+    sed -i 's/{{PACKAGE_VERSION}}/$(GitVersion.MajorMinorPatch)/g' package.json
 
-    # Update task major version
+    # Set the task version
     sed -i 's/{{MAJOR_VERSION}}/$(GitVersion.Major)/g' task.json
-
-    # Update task minor version
     sed -i 's/{{MINOR_VERSION}}/$(GitVersion.Minor)/g' task.json
-
-    # Update task patch version
     sed -i 's/{{PATCH_VERSION}}/$(GitVersion.Patch)/g' task.json
   workingDirectory: ${{ parameters.workingDirectory }}
   displayName: Set package and task Versions
@@ -41,7 +37,7 @@ steps:
 
     # Copy all task files to the staging output path
     rsync -avr . \
-      --exclude=./* \
+      --exclude=* \
       --include=./node_modules \
       --include=./package.json \
       --include=./package-lock.json \
