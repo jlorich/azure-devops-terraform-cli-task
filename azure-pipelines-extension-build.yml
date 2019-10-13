@@ -6,16 +6,15 @@ jobs:
     vmImage: 'Ubuntu-16.04'
 
   steps:
-  # Use GitVersion to set build number
+  # Use GitVersion to determine the appropriate Semantic Version Number
   - task: GitVersion@5
     inputs:
       runtime: 'core'
-
-  - script: echo %Action%%BuildVersion%
+  
+  # Set the BuildNumber
+  - script: |
+      echo "##vso[build.updatebuildnumber]$(GitVersion.MajorMinorPatch)
     displayName: 'Set build version'
-    env:
-      Action: '##vso[build.updatebuildnumber]'
-      BuildVersion: $(GitVersion.NuGetVersionV2)
 
   # Build and test the Terraform Installer Task
   # - template: azure-pipelines-task-build.yml

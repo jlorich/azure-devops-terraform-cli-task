@@ -3,13 +3,6 @@
   "version": "[TASK_VERSION]",
   "description": "",
   "main": ".bin/index.js",
-  "scripts": {
-    "build": "tsc --build",
-    "pack": "./node_modules/.bin/copyfiles package.json task.json icon.png \".bin/*.js\" -e \".bin/tests/*\" .dist && cd .dist && npm install --only=prod",
-    "delete": "./node_modules/.bin/tfx build tasks delete --task-id 88fe47cf-4080-4fca-84c8-1145448293f4",
-    "upload": "tfx build tasks upload --task-path .dist",
-    "start": "node .bin/index.js"
-  },
   "author": "",
   "license": "MIT",
   "dependencies": {
