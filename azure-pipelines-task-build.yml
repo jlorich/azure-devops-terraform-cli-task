@@ -2,8 +2,7 @@ parameters:
   workingDirectory:
 
 steps:
-- displayName: Set Package and Task Versions
-  script: |
+- script: |
     # Display command output and fail immediately on any errors
     set -e -x
 
@@ -18,10 +17,9 @@ steps:
 
     # Update task patch version
     sed -i 's/{{PATCH_VERSION}}/$(GitVersion.Patch)/g' task.json
+  displayName: Set Package and Task Versions
 
-- displayName: Build, test, and package the Task
-  workingDirectory: ${{ parameters.workingDirectory }}
-  script: |
+- script: |
     # Install NPM Packages
     npm install
     
@@ -39,4 +37,5 @@ steps:
       --include=./package-lock.json \
       --include=./task.json \
       $(Build.StagingDirectory)/Tasks/  
-  
+  workingDirectory: ${{ parameters.workingDirectory }}
+  displayName: Build, test, and package the Task
