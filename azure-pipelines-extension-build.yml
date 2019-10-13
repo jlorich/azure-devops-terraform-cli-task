@@ -1,6 +1,4 @@
 parameters:
-  workingDirectory: $(System.DefaultWorkingDirectory)
-  taskDirectory: $(System.DefaultWorkingDirectory)/Tasks
   publisher:
   tasks:
 
@@ -26,7 +24,6 @@ jobs:
   - ${{ each taskName in parameters.tasks }}:
     - template: azure-pipelines-task-build.yml
       parameters:
-        tasksDirectory: ${{ parameters.taskDirectory }}
         taskName: ${{ taskName }}
   
   # Package the extension manifest
@@ -42,8 +39,6 @@ jobs:
     
       # Copy the extension manifest to the output directory
       cp ./vss-extension.json $(Build.StagingDirectory)/
-
-    workingDirectory: ${{ parameters.workingDirectory }}
     displayName: Package the extension manifest
 
   # Publish the finished extension to a pipeline artifact 

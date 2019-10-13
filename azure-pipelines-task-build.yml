@@ -19,7 +19,7 @@ steps:
 
     cat task.json
 
-  workingDirectory: $(System.DefaultWorkingDirectory)/${{ parameters.tasksDirectory }}/${{ parameters.taskName }}
+  workingDirectory: ./${{ parameters.tasksDirectory }}/${{ parameters.taskName }}
   displayName: Set versions for the ${{ parameters.taskName }} task
 
 # Built and test the extension
@@ -35,7 +35,7 @@ steps:
 
     # Run tests
    
-  workingDirectory: $(System.DefaultWorkingDirectory)/${{ parameters.tasksDirectory }}/${{ parameters.taskName }}
+  workingDirectory: ./${{ parameters.tasksDirectory }}/${{ parameters.taskName }}
   displayName: Build and test the ${{ parameters.taskName }} task
 
 # Prune and copy files to the artifact staging directory
@@ -57,6 +57,6 @@ steps:
       --include=package-lock.json \
       --include=task.json \
       --exclude=* \
-      ./ $(System.DefaultWorkingDirectory)/${{ parameters.tasksDirectory }}/${{ parameters.taskName }}
-  workingDirectory: $(System.DefaultWorkingDirectory)/${{ parameters.tasksDirectory }}/${{ parameters.taskName }}
+      ./ $(System.StagingDirectory)/Tasks/${{ parameters.taskName }}
+  workingDirectory: ./${{ parameters.tasksDirectory }}/${{ parameters.taskName }}
   displayName: Package the ${{ parameters.taskName }} task for release
