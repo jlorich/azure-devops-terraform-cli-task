@@ -9,10 +9,14 @@ jobs:
     vmImage: 'Ubuntu-16.04'
   
   steps:
+  # Do not clone from git for this job
+  - checkout: none
+
+  # Download the published extension artifact to deploy
   - download: current
     artifact: extension
 
-  # Upload the extension
+  # Publish the extension to Azure DevOps
   - script: |
       # Display command output and fail immediately on any errors
       set -e -x
@@ -29,4 +33,5 @@ jobs:
       tfx extension publish
     env:
       SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+    workingDirectory: (Pipeline.Workspace)/extension
     displayName: Build, test and package the Task
