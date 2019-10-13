@@ -19,7 +19,7 @@ jobs:
       echo "##vso[build.updatebuildnumber]$(GitVersion.MajorMinorPatch)"
     displayName: 'Set Bulid Number'
 
-  - ${{ each task in parameters.tasks }}
+  - ${{ each task in parameters.tasks }}:
     # Build and test the Terraform Installer Task
     - template: azure-pipelines-task-build.yml
       parameters:
