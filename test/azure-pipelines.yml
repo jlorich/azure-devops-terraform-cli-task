@@ -1,0 +1,19 @@
+trigger:
+  batch: true
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - test/
+
+steps:
+- task: terraform@0
+  inputs:
+    command: 'init'
+    backend: 'Azure'
+    backendAzureUseTargetConnectedServiceForBackend: false
+    backendAzureConnectedServiceName: 'MTC Denver Sandbox'
+    backendAzureStorageAccountName: 'mtcdenterraformsandbox'
+    backendAzureContainerName: 'tfstate'
+    backendAzureStateFileKey: 'terraform.tfstate'

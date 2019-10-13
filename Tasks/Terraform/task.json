@@ -24,12 +24,6 @@
             "visibleRule": "backend = Azure"
         },
         {
-            "name": "providerAzure",
-            "displayName": "Azure Provider Configuration",
-            "isExpanded": true,
-            "visibleRule": "provider = Azure"
-        },
-        {
             "name": "script",
             "displayName": "Script",
             "isExpanded": true
@@ -64,7 +58,7 @@
             "defaultValue": "azure",
             "required": true,
             "helpMarkDown": "Select a Terraform provider",
-            "visibleRule": "command != init",
+            "visibleRule": "command != init && command != validate",
             "options": {
                 "Azure": "Azure",
                 "AWS": "AWS",
@@ -79,10 +73,10 @@
             "label": "Provider Azure subscription",
             "required": true,
             "helpMarkDown": "Select the Azure Resource Manager subscription your Terraform will execute against.",
+            "visibleRule": "provider = Azure",
             "properties": {
                 "EndpointFilterRule": "ScopeLevel != ManagementGroup"
-            },
-            "groupName": "providerAzure"
+            }
         },
 
         {
