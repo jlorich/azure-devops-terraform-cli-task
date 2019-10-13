@@ -23,7 +23,7 @@
     ],
     "contributions": [
         {
-            "id": "5619d23d-fb03-4459-a295-5958fd240452",
+            "id": "9b9f2e72-30c3-432b-a835-dd2b1160f3b5",
             "type": "ms.vss-distributed-task.task",
             "targets": [
                 "ms.vss-distributed-task.tasks"

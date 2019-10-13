@@ -2,7 +2,7 @@ import tasks = require('azure-pipelines-task-lib/task');
 import tools = require('azure-pipelines-tool-lib/tool');
 import { ToolRunner } from 'azure-pipelines-task-lib/toolrunner';
 import path = require('path');
-import * as installer from './terraform-installer';
+import * as installer from './TerraformInstaller';
 
 async function configureTerraform() {
     let inputVersion = tasks.getInput("terraformVersion", true);

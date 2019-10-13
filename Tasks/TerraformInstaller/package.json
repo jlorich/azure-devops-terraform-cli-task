@@ -1,29 +1,19 @@
 {
-  "name": "azure-pipelines-terraform-installer-task",
+  "name": "azure-pipelines-terraform-installer",
   "version": "1.0.0",
   "description": "",
-  "main": ".bin/index.js",
+  "main": "index.js",
   "scripts": {
-    "build": "tsc --build",
-    "start": "node .bin/index.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "MIT",
+  "license": "Mozilla Public License Version 2.0",
   "dependencies": {
-    "azure-pipelines-task-lib": "^2.8.0",
-    "config": "^3.2.1",
-    "inversify": "^5.0.1",
-    "reflect-metadata": "^0.1.13",
-    "tsyringe": "^3.3.0"
-  },
-  "devDependencies": {
     "@types/mocha": "^5.2.7",
-    "@types/node": "^12.6.8",
-    "@types/q": "^1.5.2",
-    "copyfiles": "^2.1.0",
-    "mocha": "^5.2.0",
-    "tfx-cli": "^0.6.4",
-    "typescript": "^3.3.3333",
-    "mocha-junit-reporter": "^1.18.0"
-  }
+    "@types/node": "^6.0.101",
+    "@types/q": "^1.5.0",
+    "azure-pipelines-task-lib": "2.8.0",
+    "azure-pipelines-tool-lib": "0.11.0"
+  },
+  "devDependencies": {}
 }

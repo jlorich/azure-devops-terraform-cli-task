@@ -21,7 +21,7 @@ steps:
     npm install --dev
     
     # Build typescript
-    tsc --build
+    tsc --build --clean
 
     # Run tests
    
