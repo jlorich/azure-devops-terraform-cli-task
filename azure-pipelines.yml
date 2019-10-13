@@ -18,7 +18,6 @@ stages:
   - template: azure-pipelines-extension-build.yml
     parameters:
       publisher: jlorich
-      taskDirectory: $(System.WorkingDirectory)/Tasks
       tasks:
         - TerraformInstaller
         - Terraform
