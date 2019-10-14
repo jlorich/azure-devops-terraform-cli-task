@@ -6,7 +6,7 @@
         {
             "label": "Compile TypeScript",
             "type": "typescript",
-            "tsconfig": "terraformCliTask/tsconfig.json",
+            "tsconfig": "Tasks/Terraform/tsconfig.json",
             "problemMatcher": [
                 "$tsc"
             ],

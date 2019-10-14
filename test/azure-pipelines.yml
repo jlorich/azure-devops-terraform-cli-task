@@ -33,3 +33,22 @@ steps:
     command: 'apply'
     provider: 'azure'
     providerAzureConnectedServiceName: 'MTC Denver Production'
+
+- task: terraform@0
+  inputs:
+    command: 'destroy'
+    provider: 'azure'
+    providerAzureConnectedServiceName: 'MTC Denver Production'
+
+- task: terraform@0
+  inputs:
+    command: 'CLI'
+    provider: 'azure'
+    providerAzureConnectedServiceName: 'MTC Denver Production'
+    initialize: true
+    backend: 'Azure'
+    backendAzureUseTargetConnectedServiceForBackend: false
+    backendAzureConnectedServiceName: 'MTC Denver Sandbox'
+    backendAzureStorageAccountName: 'mtcdenterraformsandbox'
+    backendAzureContainerName: 'tfstate'
+    backendAzureStateFileKey: 'terraform.tfstate'

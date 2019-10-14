@@ -8,52 +8,69 @@ import { TerraformProviderType } from "./Provider/TerraformProviderType"
 @injectable()
 export class TaskOptions {
 
-    readonly ConnectedServiceName : string;
-    readonly UseTargetSubscriptionForBackend : boolean;
-    readonly BackendConnectedServiceName : string;
-    readonly TargetStorageAccountName : string;
-    readonly BackendStorageAccountName : string;
-    readonly BackendContainerName : string;
-    readonly BackendStateFileKey : string;
-    readonly ScriptLocation : string;
-    readonly ScriptPath : string;
-    readonly Cwd : string;
-    readonly Script : string;
-    readonly Initialize : boolean;
-    readonly TempDir : string;
-    readonly TerraformProviderType : TerraformProviderType;
+    readonly provider : string;
+    readonly command : string;
+    readonly providerAzureConnectedServiceName : string;
+    readonly initialize : boolean;
+
+    readonly backend : string;
+
+    readonly backendAzureUseProviderConnectedServiceForBackend : boolean;
+    readonly backendAzureConnectedServiceName : string;
+    readonly backendAzureStorageAccountName : string;
+    readonly backendAzureProviderStorageAccountName : string;
+    readonly backendAzureContainerName : string;
+    readonly backendAzureStateFileKey : string;
+
+    readonly scriptLocation : string;
+    readonly scriptPath : string;
+    readonly cwd : string;
+    readonly script : string;
+    
+    readonly tempDir : string;
+    readonly terraformProviderType : TerraformProviderType;
 
     constructor() {
-        this.ConnectedServiceName = task.getInput("connectedServiceName", true)
-        this.UseTargetSubscriptionForBackend = task.getInput("useTargetSubscriptionForBackend") === "true";
-        this.BackendConnectedServiceName = task.getInput("backendConnectedServiceName", false)
-        this.BackendStorageAccountName = task.getInput("backendStorageAccountName", false)
-        this.TargetStorageAccountName = task.getInput("targetStorageAccountName", false)
-        this.BackendContainerName = task.getInput("backendContainerName", true)
-        this.BackendStateFileKey = task.getInput("backendStateFileKey", true)
-        this.ScriptLocation = task.getInput("scriptLocation", true)
-        this.ScriptPath = task.getInput("scriptPath")
-        this.Script = task.getInput("script")
-        this.Cwd = task.getInput("cwd")
-        this.Initialize = task.getInput("initialize") === "true";
+        this.provider = task.getInput("provider", true);
+        this.command = task.getInput("command", true);
+
+        this.providerAzureConnectedServiceName = task.getInput("providerAzureConnectedServiceName")
+        this.initialize = task.getInput("initialize") === "true";
+
+        this.backend = task.getInput("backend");
+
+        // Azure Backend
+        this.backendAzureUseProviderConnectedServiceForBackend = task.getInput("backendAzureUseProviderConnectedServiceForBackend") === "true";
+        this.backendAzureConnectedServiceName = task.getInput("backendAzureConnectedServiceName")
+        this.backendAzureStorageAccountName = task.getInput("backendAzureStorageAccountName")
+        this.backendAzureProviderStorageAccountName = task.getInput("backendAzureProviderStorageAccountName")
+        this.backendAzureContainerName = task.getInput("backendAzureContainerName")
+        this.backendAzureStateFileKey = task.getInput("backendAzureStateFileKey")
+
+        // CLI Task
+        this.scriptLocation = task.getInput("scriptLocation")
+        this.scriptPath = task.getInput("scriptPath")
+        this.cwd = task.getInput("cwd")
+        this.script = task.getInput("script")
+      
         
-        this.TempDir = task.getVariable("Agent.TempDirectory");
+        this.tempDir = task.getVariable("Agent.TempDirectory");
 
         switch (task.getInput("providerType")) {
             case "Azure":
-                this.TerraformProviderType = TerraformProviderType.Azure;
+                this.terraformProviderType = TerraformProviderType.Azure;
                 break;
             case "AWS":
-                this.TerraformProviderType = TerraformProviderType.Aws;
+                this.terraformProviderType = TerraformProviderType.Aws;
                 break;
             case "GCP":
-                this.TerraformProviderType = TerraformProviderType.Gcp;
+                this.terraformProviderType = TerraformProviderType.Gcp;
                 break;
             case "Remote":
-                this.TerraformProviderType = TerraformProviderType.Remote;
+                this.terraformProviderType = TerraformProviderType.Remote;
                 break;
             default:
-                this.TerraformProviderType = TerraformProviderType.Unknown;
+                this.terraformProviderType = TerraformProviderType.Unknown;
         }
     }
 }

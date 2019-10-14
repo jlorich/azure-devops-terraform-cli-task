@@ -8,14 +8,16 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "envFile": "${workspaceFolder}/terraformCliTask/.env",
-            "program": "${workspaceFolder}/terraformCliTask/src/index.ts",
+            "envFile": "${workspaceFolder}/Tasks/Terraform/.env",
+            "program": "${workspaceFolder}/Tasks/Terraform/src/index.ts",
             "preLaunchTask": "Compile TypeScript",
             "internalConsoleOptions": "openOnSessionStart",
+            "localRoot": "${workspaceFolder}",
+            "remoteRoot": "${workspaceFolder}",
             "sourceMaps": true,
             "smartStep": true,
             "outFiles": [
-                "${workspaceFolder}/terraformCliTask/.bin/**/*.js"
+                "${workspaceFolder}/Tasks/Terraform/.bin/**/*.js"
             ]
         }
     ]

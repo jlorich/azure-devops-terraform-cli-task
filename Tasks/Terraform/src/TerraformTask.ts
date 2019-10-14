@@ -7,14 +7,17 @@ import { TerraformCommandRunner } from "./TerraformCommandRunner";
 import { TaskOptions } from './TaskOptions';
 
 @injectable()
-export class TerraformCliTask {
+export class TerraformTask {
 
-    constructor(private terraform : TerraformCommandRunner, private options: TaskOptions) {
+    constructor(
+        private terraform : TerraformCommandRunner,
+        private options: TaskOptions)
+    {
         
     }
 
     public async run() {
-        if(this.options.Initialize) {
+        if(this.options.initialize) {
             await this.terraform.init();
         }
 
@@ -25,11 +28,11 @@ export class TerraformCliTask {
     private InitScriptAtPath(): string {
         let scriptPath: string;
 
-        if (this.options.ScriptLocation === "scriptPath") {
-            scriptPath = this.options.ScriptPath;
+        if (this.options.scriptLocation === "scriptPath") {
+            scriptPath = this.options.scriptPath;
         }
         else {
-            var tmpDir = this.options.TempDir || os.tmpdir();
+            var tmpDir = this.options.tempDir || os.tmpdir();
 
             if (os.type() != "Windows_NT") {
                 scriptPath = path.join(tmpDir, "terraformclitaskscript" + new Date().getTime() + ".sh");
@@ -38,7 +41,7 @@ export class TerraformCliTask {
                 scriptPath = path.join(tmpDir, "terraformclitaskscript" + new Date().getTime() + ".bat");
             }
             
-            this.createFile(scriptPath, this.options.Script);
+            this.createFile(scriptPath, this.options.script);
         }
 
         return scriptPath;

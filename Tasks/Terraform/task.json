@@ -107,7 +107,7 @@
         },
 
         {
-            "name": "backendAzureUseTargetConnectedServiceForBackend",
+            "name": "backendAzureUseProviderConnectedServiceForBackend",
             "type": "bool",
             "label": "Use provider connection for backend",
             "defaultValue": "true",
@@ -122,7 +122,7 @@
             "label": "Backend Azure subscription",
             "required": true,
             "helpMarkDown": "Select the Azure Resource Manager subscription your Terraform backend will live in.",
-            "visibleRule": "backendAzureUseTargetConnectedServiceForBackend = false",
+            "visibleRule": "backendAzureUseProviderConnectedServiceForBackend = false",
             "properties": {
                 "EndpointFilterRule": "ScopeLevel != ManagementGroup"
             },
@@ -135,7 +135,7 @@
             "defaultValue": "",
             "required": true,
             "helpMarkDown": "Specify a pre-existing ARM storage account. It will be used to store your backend Terraform state.",
-            "visibleRule": "backendAzureUseTargetConnectedServiceForBackend = false",
+            "visibleRule": "backendAzureUseProviderConnectedServiceForBackend = false",
             "properties": {
                 "EditableOptions": "True"
             },
@@ -148,7 +148,7 @@
             "defaultValue": "",
             "required": true,
             "helpMarkDown": "Specify a pre-existing ARM storage account. It will be used to store your backend Terraform state.",
-            "visibleRule": "backendAzureUseTargetConnectedServiceForBackend = true",
+            "visibleRule": "backendAzureUseProviderConnectedServiceForBackend = true",
             "properties": {
                 "EditableOptions": "True"
             },

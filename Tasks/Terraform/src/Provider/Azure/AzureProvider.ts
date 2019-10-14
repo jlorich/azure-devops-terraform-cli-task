@@ -10,11 +10,12 @@ import { AzureStorageService } from "./AzureStorageService"
  * Terraform Azure Provider and Backend
  */
 @injectable()
-export class AzureProvider implements TerraformProvider {
+export class AzureProvider {
     private armConnectedService: ARMConnectedServiceOptions;
     
     constructor(private options : TaskOptions) {
-        this.armConnectedService = new ARMConnectedServiceOptions(this.options.ConnectedServiceName);
+
+        this.armConnectedService = new ARMConnectedServiceOptions(this.options.providerAzureConnectedServiceName);
     }
 
     /**
@@ -59,24 +60,24 @@ export class AzureProvider implements TerraformProvider {
     public async getBackendConfig(): Promise<{ [key: string]: string; }> {
         let connectedService : ARMConnectedServiceOptions;
 
-        if (this.options.UseTargetSubscriptionForBackend) {
+        if (this.options.backendAzureUseProviderConnectedServiceForBackend) {
             connectedService = this.armConnectedService;
         } else {
-            connectedService = new ARMConnectedServiceOptions(this.options.BackendConnectedServiceName)
+            connectedService = new ARMConnectedServiceOptions(this.options.backendAzureConnectedServiceName)
         }
 
         let storage = new AzureStorageService(connectedService);
-        let storageAccount = this.options.UseTargetSubscriptionForBackend ? this.options.TargetStorageAccountName : this.options.BackendStorageAccountName;
+        let storageAccount = this.options.backendAzureUseProviderConnectedServiceForBackend ? this.options.backendAzureProviderStorageAccountName : this.options.backendAzureStorageAccountName;
 
         // I'd much prefer to use a SAS here but generating SAS isn't supported via the JS SDK without using a key
         let storage_key = await storage.getKey(
             storageAccount,
-            this.options.BackendContainerName);
+            this.options.backendAzureContainerName);
 
         return {
             storage_account_name: storageAccount,
-            container_name: this.options.BackendContainerName,
-            key: this.options.BackendStateFileKey,
+            container_name: this.options.backendAzureContainerName,
+            key: this.options.backendAzureStateFileKey,
             access_key: storage_key
         }
     }

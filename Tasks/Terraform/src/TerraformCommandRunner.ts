@@ -1,19 +1,21 @@
 import os = require("os");
 import task = require('azure-pipelines-task-lib/task');
 import fs = require("fs");
-
-import { Container, injectable, inject } from "inversify";
+import { injectable } from "inversify";
 import { ToolRunner, IExecOptions, IExecSyncResult } from "azure-pipelines-task-lib/toolrunner";
 import { TaskOptions } from "./TaskOptions";
 import { TerraformProvider } from "./Provider/TerraformProvider";
+import { AzureProvider } from "./Provider/Azure/AzureProvider";
+import { TerraformProviderType } from "./Provider/TerraformProviderType";
 
 @injectable()
 export class TerraformCommandRunner {
     private readonly terraform : ToolRunner;
 
-    constructor(
-        private options: TaskOptions,
-        private provider : TerraformProvider
+    public constructor(
+        private provider : AzureProvider,
+        private options: TaskOptions
+        
     ) {
         this.terraform = this.createTerraformToolRunner();
     }
@@ -49,7 +51,7 @@ export class TerraformCommandRunner {
         let tool = this.createCliToolRunner(script);
 
         let result = await tool.exec({
-            cwd: this.options.Cwd,
+            cwd: this.options.cwd,
             env: {
                 ...process.env,
                 ...env
@@ -80,7 +82,7 @@ export class TerraformCommandRunner {
         }
 
         let result = await command.exec({
-            cwd: this.options.Cwd,
+            cwd: this.options.cwd,
             env: {
                 ...process.env,
                 ...env

@@ -14,7 +14,8 @@
     "types": [
       "node", 
       "mocha", 
-      "q"
+      "q",
+      "reflect-metadata"
     ]
   },
   "exclude": [
