@@ -77,12 +77,15 @@ export class TerraformCommandRunner {
             .arg(cmd)
             .arg("-input=false");
 
-        for (let arg in args) {
+        for (let arg of args) {
             command.arg(arg);
         }
 
+        if(this.options.cwd) {
+            command.arg(this.options.cwd);
+        }
+
         let result = await command.exec({
-            cwd: this.options.cwd,
             env: {
                 ...process.env,
                 ...env

@@ -17,6 +17,19 @@ export class TerraformTask {
     }
 
     public async run() {
+        switch(this.options.command) {
+            case "init":
+                this.terraform.init();
+                break;
+            case "cli":
+                this.cli();
+                break;
+            default:
+                this.terraform.exec(this.options.command, []);
+        }
+    }
+
+    public async cli() {
         if(this.options.initialize) {
             await this.terraform.init();
         }

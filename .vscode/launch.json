@@ -8,14 +8,17 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
+            "stopOnEntry": true,
             "envFile": "${workspaceFolder}/Tasks/Terraform/.env",
             "program": "${workspaceFolder}/Tasks/Terraform/src/index.ts",
             "preLaunchTask": "Compile TypeScript",
             "internalConsoleOptions": "openOnSessionStart",
-            "localRoot": "${workspaceFolder}",
-            "remoteRoot": "${workspaceFolder}",
+            // "localRoot": "${workspaceFolder}/Tasks/Terraform/src",
+            // "remoteRoot": "${workspaceFolder}/Tasks/Terraform/.bin",
+            // "runtimeArgs": ["--preserve-symlinks"],
             "sourceMaps": true,
-            "smartStep": true,
+            //"smartStep": false,
+            "outputCapture": "std",
             "outFiles": [
                 "${workspaceFolder}/Tasks/Terraform/.bin/**/*.js"
             ]
