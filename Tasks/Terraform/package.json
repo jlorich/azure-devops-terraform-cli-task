@@ -2,7 +2,7 @@
   "name": "azure-pipelines-terraform-task",
   "version": "0.0.1",
   "description": "A Terraform task for Azure Pipelines",
-  "main": ".bin/index.js",
+  "main": ".bin/src/index.js",
   "author": "",
   "license": "MPL-2.0",
   "scripts": {
