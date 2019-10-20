@@ -23,13 +23,17 @@ export class TerraformTask {
 
         switch(this.options.command) {
             case "init":
-                this.terraform.init();
+                await this.terraform.init();
                 break;
             case "authenticate":
-                this.terraform.authenticate();
+                await this.terraform.authenticate();
+                break;
+            case "destroy":
+                // No interaction exists so always approve
+                await this.terraform.exec(this.options.command, ["-auto-approve=true"]);
                 break;
             default:
-                this.terraform.exec(this.options.command, []);
+                await this.terraform.exec(this.options.command, []);
         }
     }
 }
