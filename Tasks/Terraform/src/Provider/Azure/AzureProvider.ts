@@ -100,10 +100,6 @@ export class AzureProvider {
             storageAccount,
             this.options.backendAzureContainerName);
         
-        process.env["AZTF_STORAGE_ACCESS_KEY"] = storage_key;
-
-            // storage_key = "WuEKG2UM0YsInkc+BB8EoDPpkvkwK0xDuPmOegxEaWKKyIJBKyS7cziD6luAGFucziyiv72g67IhISXOcFTdgQ=="
-        
         return {
             storage_account_name: storageAccount,
             container_name: this.options.backendAzureContainerName,

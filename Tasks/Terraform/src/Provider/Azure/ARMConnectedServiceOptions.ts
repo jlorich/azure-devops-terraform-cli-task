@@ -19,6 +19,10 @@ export class ARMConnectedServiceOptions {
     constructor(private connectedServiceName: string) {
         let authScheme = task.getEndpointAuthorizationScheme(connectedServiceName, true) as string;
 
+        if (!authScheme) {
+            throw Error("No authentication sceme provided");
+        }
+
         this.loadArmDetails();
 
         switch(authScheme.toLowerCase()) {
