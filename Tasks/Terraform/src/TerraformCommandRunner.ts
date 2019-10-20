@@ -59,9 +59,11 @@ export class TerraformCommandRunner {
             throw new Error("No command specified");
         }
 
+        let authenticationEnv : { [key: string]: string; } = {};
+
         // Authenticate if not init or validate
         if (["init", "validate"].indexOf(this.options.command) >=0){
-            this.provider.authenticate();
+           authenticationEnv = await this.provider.authenticate();
         }
 
         let command = this.terraform
@@ -74,7 +76,10 @@ export class TerraformCommandRunner {
 
         let result = await command.exec({
             cwd: path.join(process.cwd(), this.options.cwd || ""),
-            env: process.env,
+            env: {
+                ...process.env,
+                ...authenticationEnv
+            },
             windowsVerbatimArguments: true
         } as unknown as IExecOptions);
 
