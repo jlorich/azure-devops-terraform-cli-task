@@ -11,10 +11,10 @@ steps:
 - task: terraform@0
   inputs:
     command: 'init'
+    cwd: './test'
     backend: 'Azure'
-    backendAzureUseTargetConnectedServiceForBackend: false
-    backendAzureConnectedServiceName: 'MTC Denver Sandbox'
-    backendAzureStorageAccountName: 'mtcdenterraformsandbox'
+    providerAzureConnectedServiceName: 'MTC Denver Sandbox'
+    backendAzureProviderStorageAccountName: 'mtcdenterraformsandbox'
     backendAzureContainerName: 'tfstate'
     backendAzureStateFileKey: 'terraform.tfstate'
 
@@ -25,30 +25,20 @@ steps:
 - task: terraform@0
   inputs:
     command: 'plan'
+    cwd: './test'
     provider: 'azure'
     providerAzureConnectedServiceName: 'MTC Denver Production'
 
 - task: terraform@0
   inputs:
     command: 'apply'
+    cwd: './test'
     provider: 'azure'
     providerAzureConnectedServiceName: 'MTC Denver Production'
 
 - task: terraform@0
   inputs:
     command: 'destroy'
+    cwd: './test'
     provider: 'azure'
     providerAzureConnectedServiceName: 'MTC Denver Production'
-
-- task: terraform@0
-  inputs:
-    command: 'CLI'
-    provider: 'azure'
-    providerAzureConnectedServiceName: 'MTC Denver Production'
-    initialize: true
-    backend: 'Azure'
-    backendAzureUseTargetConnectedServiceForBackend: false
-    backendAzureConnectedServiceName: 'MTC Denver Sandbox'
-    backendAzureStorageAccountName: 'mtcdenterraformsandbox'
-    backendAzureContainerName: 'tfstate'
-    backendAzureStateFileKey: 'terraform.tfstate'
