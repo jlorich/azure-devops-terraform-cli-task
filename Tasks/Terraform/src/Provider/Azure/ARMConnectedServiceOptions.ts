@@ -17,7 +17,7 @@ export class ARMConnectedServiceOptions {
     public authenticationMethod: ARMAuthenticationMethod = ARMAuthenticationMethod.Unknown;
 
     constructor(private connectedServiceName: string) {
-        let authScheme = task.getEndpointAuthorizationScheme(connectedServiceName, true);
+        let authScheme = task.getEndpointAuthorizationScheme(connectedServiceName, true) as string;
 
         this.loadArmDetails();
 
@@ -35,7 +35,7 @@ export class ARMConnectedServiceOptions {
      * Sets ARM Tenant and subscription details based on the connected service
      */
     private loadArmDetails() {
-        this.tenantId = task.getEndpointAuthorizationParameter(this.connectedServiceName, "tenantid", true);
+        this.tenantId = task.getEndpointAuthorizationParameter(this.connectedServiceName, "tenantid", true) as string;
         this.subscriptionId = task.getEndpointDataParameter(this.connectedServiceName, 'subscriptionid', true);
     }
 
@@ -43,8 +43,8 @@ export class ARMConnectedServiceOptions {
      * Sets service principal details based on the connected service
      */
     private loadServicePrincipalDetails() {
-        let authType = task.getEndpointAuthorizationParameter(this.connectedServiceName, 'authenticationType', true);
-        this.clientId = task.getEndpointAuthorizationParameter(this.connectedServiceName, "serviceprincipalid", false);
+        let authType = task.getEndpointAuthorizationParameter(this.connectedServiceName, 'authenticationType', true) as string;
+        this.clientId = task.getEndpointAuthorizationParameter(this.connectedServiceName, "serviceprincipalid", true) as string;
 
         switch(authType) {
             case "spnCertificate":
@@ -60,7 +60,7 @@ export class ARMConnectedServiceOptions {
      */
     private loadServicePrincipalKeyDetails() {
         this.authenticationMethod = ARMAuthenticationMethod.ServicePrincipalKey;
-        this.clientSecret = task.getEndpointAuthorizationParameter(this.connectedServiceName, "serviceprincipalkey", false);
+        this.clientSecret = task.getEndpointAuthorizationParameter(this.connectedServiceName, "serviceprincipalkey", true) as string;
     }
 
     /**
@@ -68,8 +68,8 @@ export class ARMConnectedServiceOptions {
      */
     private loadServicePrincipalCertificateDetails() {
         this.authenticationMethod = ARMAuthenticationMethod.ServicePrincipalCertificate;
-        let certificateContent: string = task.getEndpointAuthorizationParameter(this.connectedServiceName, "servicePrincipalCertificate", false);
-        let certificatePath = path.join(task.getVariable('Agent.TempDirectory') || task.getVariable('system.DefaultWorkingDirectory'), 'spnCert.pem');
+        let certificateContent = task.getEndpointAuthorizationParameter(this.connectedServiceName, "servicePrincipalCertificate", true);
+        let certificatePath = path.join(task.getVariable('Agent.TempDirectory') as string || task.getVariable('system.DefaultWorkingDirectory') as string, 'spnCert.pem');
         
         fs.writeFileSync(certificatePath, certificateContent);
 

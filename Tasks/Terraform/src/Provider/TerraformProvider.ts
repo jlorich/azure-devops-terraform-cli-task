@@ -6,20 +6,19 @@ import { injectable } from "inversify";
 @injectable()
 export abstract class TerraformProvider {
     /**
-     * Get's a dictionary containing the environment variables needed
-     * to authenticate Terraform with the given Provider
+     * Configures the file system and process environment variables necessary to run Terraform
+     * in an authenticated manner.
+     * 
+     * @param exportToEnv - Should authentication params be set in the Process env
+     *                      so they can be used in later tasks
+     * 
+     * @returns Variables to set for auth in the spawned process env
      */
-    abstract configure() : Promise<void>;
-
-    /**
-     * Get's a dictionary containing the environment variables needed
-     * to authenticate Terraform with the given Provider
-     */
-    abstract getEnv() : Promise<{ [key: string]: string; }>;
+    abstract authenticate(exportToProcessEnv : boolean) : Promise<{ [key: string]: string; }>;
 
     /**
      * Get's a dictionary containing the backend-config parameters
      * to set on init
      */
-    abstract getBackendConfig() : Promise<{ [key: string]: string; }>;
+    abstract getBackendConfigOptions() : Promise<{ [key: string]: string; }>;
 }

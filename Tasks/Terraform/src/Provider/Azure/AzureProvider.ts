@@ -11,33 +11,30 @@ import { AzureStorageService } from "./AzureStorageService"
  */
 @injectable()
 export class AzureProvider {
-    private armConnectedService: ARMConnectedServiceOptions;
+    private armConnectedService: ARMConnectedServiceOptions | undefined = undefined;
     
     constructor(private options : TaskOptions) {
 
-        this.armConnectedService = new ARMConnectedServiceOptions(this.options.providerAzureConnectedServiceName);
     }
 
     /**
-     * Loads the ARM connected service information
+     * Loads the ARM connected service information into the environment
      */
-    public async configure(): Promise<void> {
+    public async authenticate(exportToProcessEnv : boolean = false) : Promise<{ [key: string]: string; }> {
+        if (!this.options.providerAzureConnectedServiceName) {
+            throw new Error("No Azure connection specified")
+        }
         
-    }
+        this.armConnectedService = new ARMConnectedServiceOptions(this.options.providerAzureConnectedServiceName);
 
-    /**
-     * Builds an object containing all the apporpriate values needed to set as Environment Variables
-     * for Terraform to be authenticated with the Azure Resource Manager connection provided
-     */
-    public async getEnv(): Promise<{ [key: string]: string; }> {
         let env : object;
                 
         switch (this.armConnectedService.authenticationMethod) {
             case ARMAuthenticationMethod.ServicePrincipalKey:
-                env = this.getServicePrincipalKeyEnv();
+                env = this.getServicePrincipalKeyEnv(this.armConnectedService);
                 break;
             case ARMAuthenticationMethod.ServicePrincipalCertificate:
-                env = this.getServicePrincipalCertificateEnv();
+                env = this.getServicePrincipalCertificateEnv(this.armConnectedService);
                 break;
             case ARMAuthenticationMethod.ManagedIdentity:
                 env = this.getManagedIdentityEnv();
@@ -46,34 +43,67 @@ export class AzureProvider {
                 env = {};
         }
 
-        return {
+        env = {
             ARM_TENANT_ID: this.armConnectedService.tenantId,
             ARM_SUBSCRIPTION_ID: this.armConnectedService.subscriptionId,
             ...env
         };
+
+        if (exportToProcessEnv) {
+            for (let [key, value] of Object.entries(env)) {
+                process.env[key] = value;
+            }
+        }
+
+        return env as { [key: string]: string; };
     }
 
     /**
      * Builds an object containing all the apporpriate values needed to set as backend-config
      * for Terraform to be use an Azure Storage Account as the backend
      */
-    public async getBackendConfig(): Promise<{ [key: string]: string; }> {
+    public async getBackendConfigOptions(): Promise<{ [key: string]: string; }> {
+
         let connectedService : ARMConnectedServiceOptions;
 
         if (this.options.backendAzureUseProviderConnectedServiceForBackend) {
-            connectedService = this.armConnectedService;
+            if (!this.options.providerAzureConnectedServiceName) {
+                throw new Error("No Azure provider connection speficied");
+            }
+
+            connectedService = new ARMConnectedServiceOptions(this.options.providerAzureConnectedServiceName);
         } else {
-            connectedService = new ARMConnectedServiceOptions(this.options.backendAzureConnectedServiceName)
+            if (!this.options.backendAzureConnectedServiceName) {
+                throw new Error("Backend connected service not specified");
+            }
+
+            connectedService = new ARMConnectedServiceOptions(this.options.backendAzureConnectedServiceName);
         }
 
         let storage = new AzureStorageService(connectedService);
         let storageAccount = this.options.backendAzureUseProviderConnectedServiceForBackend ? this.options.backendAzureProviderStorageAccountName : this.options.backendAzureStorageAccountName;
 
+        if (!storageAccount) {
+            throw new Error("Storage account not specified");
+        }
+
+        if (!this.options.backendAzureContainerName) {
+            throw new Error("Storage container name not specified");
+        }
+
+        if (!this.options.backendAzureStateFileKey) {
+            throw new Error("State file key not specified");
+        }
+
         // I'd much prefer to use a SAS here but generating SAS isn't supported via the JS SDK without using a key
         let storage_key = await storage.getKey(
             storageAccount,
             this.options.backendAzureContainerName);
+        
+        process.env["AZTF_STORAGE_ACCESS_KEY"] = storage_key;
 
+            // storage_key = "WuEKG2UM0YsInkc+BB8EoDPpkvkwK0xDuPmOegxEaWKKyIJBKyS7cziD6luAGFucziyiv72g67IhISXOcFTdgQ=="
+        
         return {
             storage_account_name: storageAccount,
             container_name: this.options.backendAzureContainerName,
@@ -85,20 +115,20 @@ export class AzureProvider {
     /**
      * Gets the appropraite ENV vars for Service Principal Key authentication
      */
-    private getServicePrincipalKeyEnv(): { [key: string]: string; } {
+    private getServicePrincipalKeyEnv(armConnectedService : ARMConnectedServiceOptions): { [key: string]: string; } {
         return {
-            ARM_CLIENT_ID: this.armConnectedService.clientId,
-            ARM_CLIENT_SECRET: this.armConnectedService.clientSecret,
+            ARM_CLIENT_ID: armConnectedService.clientId,
+            ARM_CLIENT_SECRET: armConnectedService.clientSecret,
         };
     }
 
     /**
      * Gets the appropraite ENV vars for Service Principal Cert authentication
      */
-    private getServicePrincipalCertificateEnv(): { [key: string]: string; } {
+    private getServicePrincipalCertificateEnv(armConnectedService : ARMConnectedServiceOptions): { [key: string]: string; } {
         return {
-            ARM_CLIENT_ID: this.armConnectedService.clientId,
-            ARM_CLIENT_SECRET: this.armConnectedService.clientSecret,
+            ARM_CLIENT_ID: armConnectedService.clientId,
+            ARM_CLIENT_SECRET: armConnectedService.clientSecret,
         };
     }
 

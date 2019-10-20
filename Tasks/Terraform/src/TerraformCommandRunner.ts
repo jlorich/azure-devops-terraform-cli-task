@@ -7,6 +7,7 @@ import { TaskOptions } from "./TaskOptions";
 import { TerraformProvider } from "./Provider/TerraformProvider";
 import { AzureProvider } from "./Provider/Azure/AzureProvider";
 import { TerraformProviderType } from "./Provider/TerraformProviderType";
+import path = require("path");
 
 @injectable()
 export class TerraformCommandRunner {
@@ -24,44 +25,27 @@ export class TerraformCommandRunner {
      * Initializes Terraform with the configuration specified from the provider
      */
     public async init() {
-        let backendConfig = await this.provider.getBackendConfig();
+        let backendConfigOptions = await this.provider.getBackendConfigOptions();
         let args = new Array<string>();
 
         // Set the backend configuration values
-        for (let key in backendConfig) {
-            let value = backendConfig[key];
-            args.push(`-backend-config="${key}=${value}"`);
+        //
+        // Values are not quoted intentionally - the way node spawns processes it will 
+        // see quotes as part of the values
+        for (let key in backendConfigOptions) {
+            let value = backendConfigOptions[key];
+            args.push(`-backend-config=${key}=${value}`);
         }
 
         await this.exec("init", args);
     }
 
     /**
-     * Executes a script within an authenticated Terraform environment
-     * @param script The location of the script to run
+     * Authenticates Terraform in the Process environment so future tasks can call
+     * Terraform
      */
-    public async cli(script: string) {
-        console.log("Executing terraform script");
-
-        let content = fs.readFileSync(script,'utf8');
-
-        console.log(content);
-
-        let env = this.provider.getEnv();
-        let tool = this.createCliToolRunner(script);
-
-        let result = await tool.exec({
-            cwd: this.options.cwd,
-            env: {
-                ...process.env,
-                ...env
-            },
-            windowsVerbatimArguments: true
-        } as unknown as IExecOptions);
-
-        if (result > 0) {
-            throw new Error("Terraform initalize failed");
-        }
+    public async authenticate() {
+        this.provider.authenticate(true);
     }
 
    /**
@@ -71,7 +55,14 @@ export class TerraformCommandRunner {
     public async exec(cmd: string, args: Array<string>) {
         console.log("Executing terraform command");
 
-        let env = this.provider.getEnv();
+        if (!this.options.command) {
+            throw new Error("No command specified");
+        }
+
+        // Authenticate if not init or validate
+        if (["init", "validate"].indexOf(this.options.command) >=0){
+            this.provider.authenticate();
+        }
 
         let command = this.terraform
             .arg(cmd)
@@ -81,15 +72,9 @@ export class TerraformCommandRunner {
             command.arg(arg);
         }
 
-        if(this.options.cwd) {
-            command.arg(this.options.cwd);
-        }
-
         let result = await command.exec({
-            env: {
-                ...process.env,
-                ...env
-            },
+            cwd: path.join(process.cwd(), this.options.cwd || ""),
+            env: process.env,
             windowsVerbatimArguments: true
         } as unknown as IExecOptions);
 
@@ -104,14 +89,6 @@ export class TerraformCommandRunner {
     private createTerraformToolRunner() : ToolRunner {
         let terraformPath = task.which("terraform", true);
         let terraform: ToolRunner = task.tool(terraformPath);
-        
-        terraform.on("stdout", (data: Buffer) => {
-            console.log(data.toString());
-        });
-
-        terraform.on("stderr", (data: Buffer) => {
-            console.log(data.toString());
-        });
 
         return terraform;
     }

@@ -8,26 +8,26 @@ import { TerraformProviderType } from "./Provider/TerraformProviderType"
 @injectable()
 export class TaskOptions {
 
-    readonly provider : string;
-    readonly command : string;
-    readonly providerAzureConnectedServiceName : string;
-    readonly initialize : boolean;
+    readonly provider : string | undefined;
+    readonly command : string | undefined;
+    readonly providerAzureConnectedServiceName : string | undefined;
+    readonly initialize : boolean | undefined;
 
-    readonly backend : string;
+    readonly backend : string | undefined;
 
-    readonly backendAzureUseProviderConnectedServiceForBackend : boolean;
-    readonly backendAzureConnectedServiceName : string;
-    readonly backendAzureStorageAccountName : string;
-    readonly backendAzureProviderStorageAccountName : string;
-    readonly backendAzureContainerName : string;
-    readonly backendAzureStateFileKey : string;
+    readonly backendAzureUseProviderConnectedServiceForBackend : boolean | undefined;
+    readonly backendAzureConnectedServiceName : string | undefined;
+    readonly backendAzureStorageAccountName : string | undefined;
+    readonly backendAzureProviderStorageAccountName : string | undefined;
+    readonly backendAzureContainerName : string | undefined;
+    readonly backendAzureStateFileKey : string | undefined;
 
-    readonly scriptLocation : string;
-    readonly scriptPath : string;
-    readonly cwd : string;
-    readonly script : string;
+    readonly scriptLocation : string | undefined;
+    readonly scriptPath : string | undefined;
+    readonly cwd : string | undefined;
+    readonly script : string | undefined;
     
-    readonly tempDir : string;
+    readonly tempDir : string | undefined;
     readonly terraformProviderType : TerraformProviderType;
 
     constructor() {

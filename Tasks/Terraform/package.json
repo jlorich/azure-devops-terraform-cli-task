@@ -7,13 +7,13 @@
   "license": "MPL-2.0",
   "scripts": {
     "build": "tsc --build",
-    "start": "node .bin/src/index.js",
+    "start": "node -r dotenv/config .bin/src/index.js",
     "test": "ts-mocha test/**/*.spec.ts"
   },
   "dependencies": {
     "@azure/arm-storage": "^9.0.1",
     "@azure/ms-rest-nodeauth": "^2.0.2",
-    "azure-pipelines-task-lib": "^2.8.0",
+    "azure-pipelines-task-lib": "^2.9.3",
     "config": "^3.2.1",
     "inversify": "^5.0.1",
     "reflect-metadata": "^0.1.13",
@@ -27,6 +27,7 @@
     "@types/q": "^1.5.2",
     "chai": "^4.2.0",
     "copyfiles": "^2.1.0",
+    "dotenv": "^8.2.0",
     "mocha": "^5.2.0",
     "mocha-junit-reporter": "^1.18.0",
     "tfx-cli": "^0.6.4",
