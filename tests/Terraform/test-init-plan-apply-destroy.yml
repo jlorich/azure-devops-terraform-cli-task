@@ -10,7 +10,7 @@ jobs:
   - task: terraform@0
     inputs:
       command: 'init'
-      cwd: 'tests/Terraform/test-template'
+      cwd: 'tests/Terraform/test-template-azure'
       provider: 'azure'
       providerAzureConnectedServiceName: 'MTC Denver Sandbox'
       backendAzureProviderStorageAccountName: 'mtcdenterraformsandbox'
@@ -19,21 +19,27 @@ jobs:
 
   - task: terraform@0
     inputs:
+      command: 'validate'
+      cwd: 'tests/Terraform/test-template-azure/'
+      displayName: 'Validate Template'
+      
+  - task: terraform@0
+    inputs:
       command: 'plan'
-      cwd: 'tests/Terraform/test-template'
+      cwd: 'tests/Terraform/test-template-azure'
       provider: 'azure'
       providerAzureConnectedServiceName: 'MTC Denver Sandbox'
 
   - task: terraform@0
     inputs:
       command: 'apply'
-      cwd: 'tests/Terraform/test-template'
+      cwd: 'tests/Terraform/test-template-azure'
       provider: 'azure'
       providerAzureConnectedServiceName: 'MTC Denver Sandbox'
 
   - task: terraform@0
     inputs:
       command: 'destroy'
-      cwd: 'tests/Terraform/test-template'
+      cwd: 'tests/Terraform/test-template-azure'
       provider: 'azure'
       providerAzureConnectedServiceName: 'MTC Denver Sandbox'

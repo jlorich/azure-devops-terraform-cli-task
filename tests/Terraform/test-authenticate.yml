@@ -17,5 +17,5 @@ jobs:
   - script: |
       terraform init
       terraform plan
-    workingDirectory: test/Terraform/test-template-no-backend
+    workingDirectory: tests/Terraform/test-template-no-backend
     displayName: Init and Plan
