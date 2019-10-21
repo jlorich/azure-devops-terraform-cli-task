@@ -8,13 +8,13 @@ import { TerraformProviderType } from "./Provider/TerraformProviderType"
 @injectable()
 export class TaskOptions {
 
-    readonly provider : string | undefined;
+    // Basic
     readonly command : string | undefined;
-    readonly providerAzureConnectedServiceName : string | undefined;
-    readonly initialize : boolean | undefined;
-
+    readonly provider : string | undefined;
     readonly backend : string | undefined;
 
+    // Azure
+    readonly providerAzureConnectedServiceName : string | undefined;
     readonly backendAzureUseProviderConnectedServiceForBackend : boolean | undefined;
     readonly backendAzureConnectedServiceName : string | undefined;
     readonly backendAzureStorageAccountName : string | undefined;
@@ -22,29 +22,30 @@ export class TaskOptions {
     readonly backendAzureContainerName : string | undefined;
     readonly backendAzureStateFileKey : string | undefined;
 
+    // CLI
     readonly scriptLocation : string | undefined;
     readonly scriptPath : string | undefined;
-    readonly cwd : string | undefined;
     readonly script : string | undefined;
+    readonly initialize : boolean | undefined;
 
+    // Advanced
+    readonly cwd : string | undefined;
     readonly args : string | undefined;
-    
     readonly tempDir : string | undefined;
     readonly terraformProviderType : TerraformProviderType;
 
-    readonly exportAuth : boolean | undefined;
-
+    /**
+     * Creates and loads a well-formed options object
+     */
     constructor() {
+        // This can be massively improved, it should be automatic
         this.provider = task.getInput("provider", true);
         this.command = task.getInput("command", true);
-
-        this.providerAzureConnectedServiceName = task.getInput("providerAzureConnectedServiceName")
-        this.initialize = task.getInput("initialize") === "true";
-        this.exportAuth = task.getBoolInput("exportAuth");
-
+        
         this.backend = task.getInput("backend");
 
         // Azure Backend
+        this.providerAzureConnectedServiceName = task.getInput("providerAzureConnectedServiceName")
         this.backendAzureUseProviderConnectedServiceForBackend = task.getBoolInput("backendAzureUseProviderConnectedServiceForBackend");
         this.backendAzureConnectedServiceName = task.getInput("backendAzureConnectedServiceName")
         this.backendAzureStorageAccountName = task.getInput("backendAzureStorageAccountName")
@@ -52,9 +53,18 @@ export class TaskOptions {
         this.backendAzureContainerName = task.getInput("backendAzureContainerName")
         this.backendAzureStateFileKey = task.getInput("backendAzureStateFileKey")
 
+        // CLI
+        this.initialize = task.getInput("initialize") === "true";
+        this.scriptLocation = task.getInput("scriptLocation");
+        this.scriptPath = task.getInput("scriptPath");
+        this.script = task.getInput("script");
+        this.initialize = task.getBoolInput("initialize");
+
         // Advanced Task Options
         this.args = task.getInput("args");
         this.cwd = task.getInput("cwd");
+
+        // System Variables
         this.tempDir = task.getVariable("Agent.TempDirectory");
 
         // Provider

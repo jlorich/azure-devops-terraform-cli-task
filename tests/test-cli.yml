@@ -9,13 +9,17 @@ jobs:
   steps:
   - task: terraform@0
     inputs:
-      command: 'authenticate'
-      provider: 'azure'
+      command: 'CLI'
       providerAzureConnectedServiceName: 'MTC Denver Sandbox'
-    displayName: Authenticate Process
+      backendAzureProviderStorageAccountName: 'mtcdenterraformsandbox'
+      backendAzureContainerName: 'tfstate'
+      backendAzureStateFileKey: 'terraform.tfstate'
+      script: |
+        # Validate
+        terraform validate
 
-  # - script: |
-  #     terraform init
-  #     terraform plan
-  #   workingDirectory: tests/Terraform/test-template-no-backend
-  #   displayName: Init and Plan
+        # Plan
+        terraform plan -input=false -out=testplan.tf
+        
+    displayName: Run Terraform CLI
+

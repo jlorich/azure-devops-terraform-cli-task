@@ -27,6 +27,12 @@
             "name": "advanced",
             "displayName": "Advanced",
             "isExpanded": false
+        },
+        {
+            "name": "CLI",
+            "displayName": "Script",
+            "isExpanded": true,
+            "visibleRule": "command = CLI"
         }
     ],
     "inputs": [
@@ -36,14 +42,14 @@
             "label": "Command",
             "defaultValue": "init",
             "required": true,
-            "helpMarkDown": "Select the Terraform command to run, or select authenticate to export authenticate Terraform for use in future tasks.",
+            "helpMarkDown": "Select the Terraform command to run, or select CLI to run a Terraform command line script in an authenticated environment.",
             "options": {
                 "init": "init",
                 "plan": "plan",
                 "apply": "apply",
                 "validate": "validate",
                 "destroy": "destroy",
-                "authenticate": "authenticate"
+                "CLI": "CLI"
             }
         },
         {
@@ -75,13 +81,13 @@
         },
 
         {
-            "name": "exportAuth",
+            "name": "initialize",
             "type": "bool",
-            "label": "Export authentication variables",
-            "defaultValue": "false",
+            "label": "Initialize Terraform",
+            "defaultValue": "true",
             "required": false,
             "visibleRule": "command = init",
-            "helpMarkDown": "Exports terraform authentication environment variables for use in future tasks"
+            "helpMarkDown": "Initializes terraform for the CLI"
         },
 
         {
@@ -91,7 +97,7 @@
             "defaultValue": "Azure",
             "required": true,
             "helpMarkDown": "Select a backend for your Terraform state",
-            "visibleRule": "command = init",
+            "visibleRule": "command = init || (command = cli && initialize = true)",
             "options": {
                 "Azure": "Azure",
                 "AWS": "AWS",

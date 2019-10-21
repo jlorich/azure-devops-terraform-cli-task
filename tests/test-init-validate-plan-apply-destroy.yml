@@ -11,7 +11,6 @@ jobs:
     inputs:
       command: 'init'
       cwd: 'tests/test-template-azure'
-      provider: 'azure'
       providerAzureConnectedServiceName: 'MTC Denver Sandbox'
       backendAzureProviderStorageAccountName: 'mtcdenterraformsandbox'
       backendAzureContainerName: 'tfstate'
@@ -28,7 +27,6 @@ jobs:
     inputs:
       command: 'plan'
       cwd: 'tests/test-template-azure'
-      provider: 'azure'
       providerAzureConnectedServiceName: 'MTC Denver Sandbox'
     displayName: Terraform Plan
 
@@ -36,7 +34,6 @@ jobs:
     inputs:
       command: 'apply'
       cwd: 'tests/test-template-azure'
-      provider: 'azure'
       providerAzureConnectedServiceName: 'MTC Denver Sandbox'
     displayName: Terraform Apply
 
@@ -44,6 +41,5 @@ jobs:
     inputs:
       command: 'destroy'
       cwd: 'tests/test-template-azure'
-      provider: 'azure'
       providerAzureConnectedServiceName: 'MTC Denver Sandbox'
     displayName: Terraform Destroy

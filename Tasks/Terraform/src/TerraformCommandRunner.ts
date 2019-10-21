@@ -36,16 +36,7 @@ export class TerraformCommandRunner {
             args.push(`-backend-config=${key}=${value}`);
         }
 
-        // Make sure to pass exportauth to enable auth on init
-        await this.exec(["init", ...args], this.options.exportAuth);
-    }
-
-    /**
-     * Authenticates Terraform in the Process environment so future tasks can call
-     * Terraform
-     */
-    public async authenticate() {
-        this.provider.authenticate(true);
+        await this.exec(["init", ...args], false);
     }
 
    /**
@@ -63,7 +54,7 @@ export class TerraformCommandRunner {
         let authenticationEnv : { [key: string]: string; } = {};
 
         if (authenticate) {
-           authenticationEnv = await this.provider.authenticate(this.options.exportAuth);
+           authenticationEnv = await this.provider.authenticate();
         }
 
         let command = this.terraform;
@@ -87,6 +78,34 @@ export class TerraformCommandRunner {
 
         if (result > 0) {
             throw new Error("Terraform initalize failed");
+        }
+    }
+
+    /**
+     * Executes a script within an authenticated Terraform environment
+     * @param script The location of the script to run
+     */
+    public async cli(script: string) {
+        // Handle authentication for this command
+        let authenticationEnv = await this.provider.authenticate();
+
+        let content = fs.readFileSync(script,'utf8');
+
+        console.log(content);
+        
+        let tool = this.createCliToolRunner(script);
+
+        let result = await tool.exec({
+            cwd: this.options.cwd,
+            env: {
+                ...process.env,
+                ...authenticationEnv
+            },
+            windowsVerbatimArguments: true
+        } as unknown as IExecOptions);
+
+        if (result > 0) {
+            throw new Error("Terraform CLI failed");
         }
     }
 

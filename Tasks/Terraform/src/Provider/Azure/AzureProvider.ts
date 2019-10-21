@@ -20,7 +20,7 @@ export class AzureProvider {
     /**
      * Loads the ARM connected service information into the environment
      */
-    public async authenticate(exportToProcessEnv : boolean = false) : Promise<{ [key: string]: string; }> {
+    public async authenticate() : Promise<{ [key: string]: string; }> {
         if (!this.options.providerAzureConnectedServiceName) {
             throw new Error("No Azure connection specified")
         }
@@ -43,20 +43,11 @@ export class AzureProvider {
                 env = {};
         }
 
-        env = {
+        return {
             ARM_TENANT_ID: this.armConnectedService.tenantId,
             ARM_SUBSCRIPTION_ID: this.armConnectedService.subscriptionId,
             ...env
         };
-
-        if (exportToProcessEnv) {
-            for (let key in env) {
-                let value = env[key];
-                process.env[key] = value;
-            }
-        }
-
-        return env as { [key: string]: string; };
     }
 
     /**
