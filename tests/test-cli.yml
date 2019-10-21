@@ -12,6 +12,7 @@ jobs:
       command: 'CLI'
       providerAzureConnectedServiceName: 'MTC Denver Sandbox'
       backendAzureProviderStorageAccountName: 'mtcdenterraformsandbox'
+      backendAzureStateFileKey: 'tfclitest.tfstate'
       cwd: tests/test-template-azure
       script: |
         # Validate

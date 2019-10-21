@@ -13,8 +13,6 @@ jobs:
       cwd: 'tests/test-template-azure'
       providerAzureConnectedServiceName: 'MTC Denver Sandbox'
       backendAzureProviderStorageAccountName: 'mtcdenterraformsandbox'
-      backendAzureContainerName: 'tfstate'
-      backendAzureStateFileKey: 'terraform.tfstate'
     displayName: Terraform Init
 
   - task: terraform@0
