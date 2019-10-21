@@ -123,7 +123,6 @@
             "label": "Initialize Terraform",
             "defaultValue": "true",
             "required": false,
-            "visibleRule": "command = cli",
             "groupName": "CLI",
             "helpMarkDown": "Initializes terraform for the CLI"
         },
