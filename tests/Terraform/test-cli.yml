@@ -14,8 +14,8 @@ jobs:
       providerAzureConnectedServiceName: 'MTC Denver Sandbox'
     displayName: Authenticate Process
 
-  - script: |
-      terraform init
-      terraform plan
-    workingDirectory: tests/Terraform/test-template-no-backend
-    displayName: Init and Plan
+  # - script: |
+  #     terraform init
+  #     terraform plan
+  #   workingDirectory: tests/Terraform/test-template-no-backend
+  #   displayName: Init and Plan

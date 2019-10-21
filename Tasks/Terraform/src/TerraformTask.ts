@@ -28,7 +28,7 @@ export class TerraformTask {
                 await this.terraform.exec(["plan", "-input=false"]);
                 break;
             case "apply":
-                await this.terraform.exec(["apply", "-input=false"]);
+                await this.terraform.exec(["apply", "-input=false", "-auto-approve"]);
                 break;
             case "destroy":
                 await this.terraform.exec(["destroy", "-auto-approve=true"]);
