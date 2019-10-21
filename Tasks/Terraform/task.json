@@ -75,11 +75,11 @@
         },
 
         {
-            "name": "initialize",
+            "name": "exportAuth",
             "type": "bool",
-            "label": "Export auth variables",
-            "defaultValue": "true",
-            "required": true,
+            "label": "Export authentication variables",
+            "defaultValue": "false",
+            "required": false,
             "visibleRule": "command = init",
             "helpMarkDown": "Exports terraform authentication environment variables for use in future tasks"
         },

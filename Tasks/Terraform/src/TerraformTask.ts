@@ -17,23 +17,27 @@ export class TerraformTask {
     }
 
     public async run() {
-        if (!this.options.command) {
-            throw new Error("No command specified");
-        }
-
         switch(this.options.command) {
             case "init":
-                await this.terraform.init();
+                await this.terraform.init(["-input=false"]);
+                break;
+            case "validate":
+                await this.terraform.exec(["validate"], false);
+                break;
+            case "plan":
+                await this.terraform.exec(["plan", "-input-false"]);
+                break;
+            case "apply":
+                await this.terraform.exec(["apply", "-input-false"]);
+                break;
+            case "destroy":
+                await this.terraform.exec(["destroy", "-auto-approve=true"]);
                 break;
             case "authenticate":
                 await this.terraform.authenticate();
                 break;
-            case "destroy":
-                // No interaction exists so always approve
-                await this.terraform.exec(this.options.command, ["-auto-approve=true"]);
-                break;
             default:
-                await this.terraform.exec(this.options.command, []);
+                throw new Error("Invalid command");
         }
     }
 }

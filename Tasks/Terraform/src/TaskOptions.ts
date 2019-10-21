@@ -32,33 +32,32 @@ export class TaskOptions {
     readonly tempDir : string | undefined;
     readonly terraformProviderType : TerraformProviderType;
 
+    readonly exportAuth : boolean | undefined;
+
     constructor() {
         this.provider = task.getInput("provider", true);
         this.command = task.getInput("command", true);
 
         this.providerAzureConnectedServiceName = task.getInput("providerAzureConnectedServiceName")
         this.initialize = task.getInput("initialize") === "true";
+        this.exportAuth = task.getBoolInput("exportAuth");
 
         this.backend = task.getInput("backend");
 
         // Azure Backend
-        this.backendAzureUseProviderConnectedServiceForBackend = task.getInput("backendAzureUseProviderConnectedServiceForBackend") === "true";
+        this.backendAzureUseProviderConnectedServiceForBackend = task.getBoolInput("backendAzureUseProviderConnectedServiceForBackend");
         this.backendAzureConnectedServiceName = task.getInput("backendAzureConnectedServiceName")
         this.backendAzureStorageAccountName = task.getInput("backendAzureStorageAccountName")
         this.backendAzureProviderStorageAccountName = task.getInput("backendAzureProviderStorageAccountName")
         this.backendAzureContainerName = task.getInput("backendAzureContainerName")
         this.backendAzureStateFileKey = task.getInput("backendAzureStateFileKey")
 
-        // CLI Task
+        // Advanced Task Options
         this.args = task.getInput("args");
-        this.scriptLocation = task.getInput("scriptLocation")
-        this.scriptPath = task.getInput("scriptPath")
-        this.cwd = task.getInput("cwd")
-        this.script = task.getInput("script")
-      
-        
+        this.cwd = task.getInput("cwd");
         this.tempDir = task.getVariable("Agent.TempDirectory");
 
+        // Provider
         switch (task.getInput("providerType")) {
             case "Azure":
                 this.terraformProviderType = TerraformProviderType.Azure;

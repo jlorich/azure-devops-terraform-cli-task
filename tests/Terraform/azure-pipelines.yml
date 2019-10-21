@@ -1,0 +1,39 @@
+trigger:
+  batch: true
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - test/
+
+stages:
+- stage: Test
+  jobs:
+  - template: test-validate.yml
+  - template: test-init-plan-apply-destroy.yml
+  - template: test-authenticate.yml
+
+
+- stage: Production
+  jobs:
+  - template: templates/release.yml
+    parameters:
+      azureSubscription: $(azureSubscription)
+      environment: production
+      terraformStorageAccountName: jlorichtfstate
+      
+steps:
+- task: terraform@0
+  inputs:
+    command: 'init'
+    cwd: './tests/Terraform/'
+    backend: 'Azure'
+    providerAzureConnectedServiceName: 'MTC Denver Sandbox'
+    backendAzureProviderStorageAccountName: 'mtcdenterraformsandbox'
+    backendAzureContainerName: 'tfstate'
+    backendAzureStateFileKey: 'terraform.tfstate'
+
+
+
+

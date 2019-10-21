@@ -1,0 +1,35 @@
+jobs:
+# Validates a valid template
+- job: ValidateTemplate
+  displayName: Validate a valid template
+
+  pool:
+    vmImage: 'Ubuntu-16.04'
+
+  steps:
+  - task: terraform@0
+    inputs:
+      command: 'validate'
+      cwd: 'tests/Terraform/test-template/'
+      displayName: 'Validate Template'
+
+# Fails to validate an invalid template
+- job: ValidateInvalidTemplate
+  displayName: Fail to validate an invalid template
+  pool:
+    vmImage: 'Ubuntu-16.04'
+
+  steps:
+  - task: terraform@0
+    inputs:
+      command: 'validate'
+      cwd: 'tests/Terraform/test-invalid-template/'
+      errorActionPreference: continue
+      displayName: 'Validate Template'
+
+  # Die on previous "success"
+  - script: |
+      echo "##vso[task.logissue type=error]Template validation incorrectly succeeded."
+      exit 1
+    displayName: Fail on validate success
+    condition: failed()

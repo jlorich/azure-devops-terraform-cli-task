@@ -22,11 +22,10 @@ export class TerraformCommandRunner {
     }
 
     /**
-     * Initializes Terraform with the configuration specified from the provider
+     * Initializes Terraform with the backend configuration specified from the provider
      */
-    public async init() {
+    public async init(args: Array<string> = [], authenticate: boolean = true) {
         let backendConfigOptions = await this.provider.getBackendConfigOptions();
-        let args = new Array<string>();
 
         // Set the backend configuration values
         //
@@ -37,7 +36,8 @@ export class TerraformCommandRunner {
             args.push(`-backend-config=${key}=${value}`);
         }
 
-        await this.exec("init", args);
+        // Make sure to pass exportauth to enable auth on init
+        await this.exec(["init", ...args], this.options.exportAuth);
     }
 
     /**
@@ -52,23 +52,21 @@ export class TerraformCommandRunner {
      * Executes a script within an authenticated Terraform environment
      * @param script The location of the script to run
      */
-    public async exec(cmd: string, args: Array<string>) {
+    public async exec(args: Array<string> = [], authenticate: boolean = true) {
         console.log("Executing terraform command");
 
         if (!this.options.command) {
             throw new Error("No command specified");
         }
 
+        // Handle authentication for this command
         let authenticationEnv : { [key: string]: string; } = {};
 
-        // Authenticate if not init or validate
-        if (["init", "validate"].indexOf(this.options.command) == -1){
-           authenticationEnv = await this.provider.authenticate();
+        if (authenticate) {
+           authenticationEnv = await this.provider.authenticate(this.options.exportAuth);
         }
 
-        let command = this.terraform
-            .arg(cmd)
-            .arg("-input=false");
+        let command = this.terraform;
 
         for (let arg of args) {
             command.arg(arg);

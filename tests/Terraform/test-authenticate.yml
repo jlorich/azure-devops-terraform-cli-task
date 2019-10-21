@@ -1,0 +1,21 @@
+jobs:
+# Validates a valid template
+- job: InitPlanApplyDestroy
+  displayName: Init, Plan, Apply, Destroy
+  dependsOn:
+  pool:
+    vmImage: 'Ubuntu-16.04'
+
+  steps:
+  - task: terraform@0
+    inputs:
+      command: 'authenticate'
+      provider: 'azure'
+      providerAzureConnectedServiceName: 'MTC Denver Sandbox'
+    displayName: Authenticate Process
+
+  - script: |
+      terraform init
+      terraform plan
+    workingDirectory: test/Terraform/test-template
+    displayName: Init and Plan
