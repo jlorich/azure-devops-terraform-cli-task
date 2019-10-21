@@ -1,6 +1,6 @@
 jobs:
 # Validates a valid template
-- job: InitPlanApplyDestroy
+- job: Authenticate
   displayName: Init, Plan, Apply, Destroy
   dependsOn:
   pool:
