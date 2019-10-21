@@ -1,7 +1,7 @@
 jobs:
 # Validates a valid template
-- job: Authenticate
-  displayName: Test Authetication
+- job: CLI
+  displayName: Test CLI
   dependsOn:
   pool:
     vmImage: 'Ubuntu-16.04'
@@ -12,14 +12,12 @@ jobs:
       command: 'CLI'
       providerAzureConnectedServiceName: 'MTC Denver Sandbox'
       backendAzureProviderStorageAccountName: 'mtcdenterraformsandbox'
-      backendAzureContainerName: 'tfstate'
-      backendAzureStateFileKey: 'terraform.tfstate'
       script: |
         # Validate
         terraform validate
 
         # Plan
         terraform plan -input=false -out=testplan.tf
-        
+
     displayName: Run Terraform CLI
 
