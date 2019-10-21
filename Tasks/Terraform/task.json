@@ -24,15 +24,15 @@
             "visibleRule": "backend = Azure"
         },
         {
+            "name": "CLI",
+            "displayName": "CLI Script",
+            "isExpanded": true,
+            "visibleRule": "command = CLI"
+        },
+        {
             "name": "advanced",
             "displayName": "Advanced",
             "isExpanded": false
-        },
-        {
-            "name": "CLI",
-            "displayName": "Script",
-            "isExpanded": true,
-            "visibleRule": "command = CLI"
         }
     ],
     "inputs": [
