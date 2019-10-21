@@ -27,7 +27,7 @@ export class AzureProvider {
         
         this.armConnectedService = new ARMConnectedServiceOptions(this.options.providerAzureConnectedServiceName);
 
-        let env : object;
+        let env : { [key: string]: string; };
                 
         switch (this.armConnectedService.authenticationMethod) {
             case ARMAuthenticationMethod.ServicePrincipalKey:
@@ -50,7 +50,8 @@ export class AzureProvider {
         };
 
         if (exportToProcessEnv) {
-            for (let [key, value] of Object.entries(env)) {
+            for (let key in env) {
+                let value = env[key];
                 process.env[key] = value;
             }
         }

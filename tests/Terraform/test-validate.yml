@@ -2,7 +2,6 @@ jobs:
 # Validates a valid template
 - job: ValidateTemplate
   displayName: Validate a valid template
-
   pool:
     vmImage: 'Ubuntu-16.04'
 

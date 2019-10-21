@@ -1,7 +1,7 @@
 jobs:
 # Validates a valid template
 - job: Authenticate
-  displayName: Init, Plan, Apply, Destroy
+  displayName: Test Authetication
   dependsOn:
   pool:
     vmImage: 'Ubuntu-16.04'
@@ -17,5 +17,5 @@ jobs:
   - script: |
       terraform init
       terraform plan
-    workingDirectory: test/Terraform/test-template
+    workingDirectory: test/Terraform/test-template-no-backend
     displayName: Init and Plan

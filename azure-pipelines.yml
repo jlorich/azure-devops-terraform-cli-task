@@ -5,7 +5,7 @@ trigger:
     - master
   paths:
     exclude:
-    - test/
+    - tests/
     - readme.md
 
 pr:
