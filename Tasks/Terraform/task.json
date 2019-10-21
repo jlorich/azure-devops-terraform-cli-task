@@ -165,6 +165,14 @@
             "required": true,
             "helpMarkDown": "Name of the state file to use in the Terraform backend.",
             "groupName": "backendAzure"
+        },
+        {
+            "name": "args",
+            "type": "string",
+            "label": "Additional Arguments",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Additional arguments to pass"
         } 
     ],
     "dataSourceBindings": [

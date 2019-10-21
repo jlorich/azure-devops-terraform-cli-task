@@ -62,7 +62,7 @@ export class TerraformCommandRunner {
         let authenticationEnv : { [key: string]: string; } = {};
 
         // Authenticate if not init or validate
-        if (["init", "validate"].indexOf(this.options.command) >=0){
+        if (["init", "validate"].indexOf(this.options.command) == -1){
            authenticationEnv = await this.provider.authenticate();
         }
 
@@ -72,6 +72,10 @@ export class TerraformCommandRunner {
 
         for (let arg of args) {
             command.arg(arg);
+        }
+
+        if (this.options.args) {
+            command.line(this.options.args);
         }
 
         let result = await command.exec({

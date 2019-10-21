@@ -26,6 +26,8 @@ export class TaskOptions {
     readonly scriptPath : string | undefined;
     readonly cwd : string | undefined;
     readonly script : string | undefined;
+
+    readonly args : string | undefined;
     
     readonly tempDir : string | undefined;
     readonly terraformProviderType : TerraformProviderType;
@@ -48,6 +50,7 @@ export class TaskOptions {
         this.backendAzureStateFileKey = task.getInput("backendAzureStateFileKey")
 
         // CLI Task
+        this.args = task.getInput("args");
         this.scriptLocation = task.getInput("scriptLocation")
         this.scriptPath = task.getInput("scriptPath")
         this.cwd = task.getInput("cwd")
