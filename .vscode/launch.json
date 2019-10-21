@@ -10,7 +10,7 @@
             "name": "Terraform",
             //"stopOnEntry": true,
             "envFile": "${workspaceFolder}/Tasks/Terraform/.env",
-            "program": "${workspaceFolder}/Tasks/Terraform/src/index.ts",
+            "program": "${workspaceFolder}/Tasks/Terraform/src/Index.ts",
             "preLaunchTask": "Compile TypeScript",
             "internalConsoleOptions": "openOnSessionStart",
             // "localRoot": "${workspaceFolder}/Tasks/Terraform/src",
