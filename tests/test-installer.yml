@@ -1,7 +1,7 @@
 jobs:
 # Validates a valid template
 - job: Installer
-  displayName: Test Authetication
+  displayName: Test Installer
   dependsOn:
   pool:
     vmImage: 'Ubuntu-16.04'

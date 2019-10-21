@@ -29,7 +29,7 @@
     ],
     "execution": {
         "Node": {
-            "target": "./bin/index.js"
+            "target": "./bin/Index.js"
         }
     },
     "outputVariables": [
