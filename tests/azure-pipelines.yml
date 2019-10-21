@@ -5,7 +5,7 @@ trigger:
     - master
   paths:
     include:
-    - tests/Terraform/*
+    - tests/*
 
 stages:
 - stage: Test
