@@ -10,8 +10,7 @@ trigger:
 stages:
 - stage: Test
   jobs:
-  - template: test-validate.yml
-  - template: test-init-plan-apply-destroy.yml
+  - template: test-init-validate-plan-apply-destroy.yml
   - template: test-authenticate.yml
 
 
