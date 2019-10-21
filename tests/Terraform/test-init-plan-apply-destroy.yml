@@ -7,6 +7,7 @@ jobs:
     vmImage: 'Ubuntu-16.04'
 
   steps:
+  - task: terraform@0
     inputs:
       command: 'init'
       cwd: 'test/Terraform/test-template'
