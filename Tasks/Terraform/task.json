@@ -97,7 +97,7 @@
             "defaultValue": "Azure",
             "required": true,
             "helpMarkDown": "Select a backend for your Terraform state",
-            "visibleRule": "command = init || (command = cli && initialize = true)",
+            "visibleRule": "command = init || command = cli && initialize = true",
             "options": {
                 "Azure": "Azure",
                 "AWS": "AWS",

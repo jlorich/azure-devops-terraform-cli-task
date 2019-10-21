@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "terraform-pipelines-extension-dev",
     "name": "Terraform",
-    "version": "0.0.8",
+    "version": "0.0.1",
     "publisher": "jlorich",
     "targets": [
         {
