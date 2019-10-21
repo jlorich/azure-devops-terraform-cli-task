@@ -79,14 +79,13 @@
                 "EndpointFilterRule": "ScopeLevel != ManagementGroup"
             }
         },
-
         {
             "name": "initialize",
             "type": "bool",
             "label": "Initialize Terraform",
             "defaultValue": "true",
             "required": false,
-            "visibleRule": "command = init",
+            "visibleRule": "command = cli",
             "helpMarkDown": "Initializes terraform for the CLI"
         },
 
@@ -97,7 +96,7 @@
             "defaultValue": "Azure",
             "required": true,
             "helpMarkDown": "Select a backend for your Terraform state",
-            "visibleRule": "command = init || command = cli && initialize = true",
+            "visibleRule": "command = init || initialize = true",
             "options": {
                 "Azure": "Azure",
                 "AWS": "AWS",
