@@ -12,6 +12,7 @@ jobs:
       command: 'CLI'
       providerAzureConnectedServiceName: 'MTC Denver Sandbox'
       backendAzureProviderStorageAccountName: 'mtcdenterraformsandbox'
+      cwd: tests/test-template-azure
       script: |
         # Validate
         terraform validate
